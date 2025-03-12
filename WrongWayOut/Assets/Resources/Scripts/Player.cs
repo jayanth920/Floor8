@@ -42,8 +42,10 @@ public class Player : MonoBehaviour
         // Initialize instruction text
         if (instructionText != null)
         {
-            instructionText.text = "E to Pickup | F to Toggle Flashlight";
+            instructionText.text = "F to Toggle Flashlight";
         }
+
+        AdjustFlashlightIntensity();
     }
 
     void Update()
@@ -85,6 +87,24 @@ public class Player : MonoBehaviour
             UpdateInstructionText("E to Pickup | F to Toggle Flashlight");
         }
     }
+
+void AdjustFlashlightIntensity()
+{
+    if (flashlight != null && nearbyKey != null)
+    {
+        float distance = Vector3.Distance(transform.position, nearbyKey.transform.position);
+        
+        // Reduce intensity when too close to prevent overexposure
+        if (distance < 1.5f) // Adjust threshold as needed
+        {
+            flashlight.GetComponent<Light>().intensity = Mathf.Lerp(3.0f, 1.2f, 1 - (distance / 1.5f));
+        }
+        else
+        {
+            flashlight.GetComponent<Light>().intensity = 3.0f; // Normal intensity
+        }
+    }
+}
 
     void PickupKey()
     {
