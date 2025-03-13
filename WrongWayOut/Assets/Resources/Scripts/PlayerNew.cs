@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro; // Import TextMeshPro
+using TMPro;
 
 public class PlayerNew : MonoBehaviour
 {
     [Header("UI Elements")]
-    public TextMeshProUGUI instructionText; // Assign this in the Inspector
+    public TextMeshProUGUI instructionText;
+    public TextMeshProUGUI roomLabel;
+    public GameObject instructionPanel;
 
     [Header("Movement")]
     public float playerSpeed = 10.0f;
@@ -15,17 +17,25 @@ public class PlayerNew : MonoBehaviour
     [Header("Key Handling")]
     private bool hasKey = false;
     public Transform keyHolder;
+    public GameObject keyPrefab; // Assign in inspector
     private GameObject nearbyKey;
     private GameObject heldKey;
     private float keyTimer = 0f;
-    private float keyTimeLimit = 5f; // 5 seconds to choose a door
+    private float keyTimeLimit = 5f;
+    private Vector3 keySpawnPosition = new Vector3(7.4f, 1.1f, 0f); // Adjust as needed
+
+    [Header("Room & Anomaly System")]
+    private int roomNumber = 0;
+    private bool hasAnomaly;
+    private Vector3 respawnPosition = new Vector3(8f, 1f, -6.5f); // Respawn location
 
     [Header("Mouse Look Settings")]
     public float mouseSensitivityX = 2.0f;
     public float mouseSensitivityY = 2.0f;
     public Transform playerBody;
-    
+
     private float xRotation = 0f;
+    private bool isPaused = false;
 
     void Awake()
     {
@@ -36,11 +46,20 @@ public class PlayerNew : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        UpdateInstructionText("Find the Key");
+        instructionPanel.SetActive(false);
+
+        SetUpNewRoom();
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            ToggleInstructions();
+        }
+
+        if (isPaused) return;
+
         ApplyGravityWithCC();
         MouseLook();
 
@@ -54,7 +73,7 @@ public class PlayerNew : MonoBehaviour
             keyTimer += Time.deltaTime;
             if (keyTimer >= keyTimeLimit)
             {
-                RestartGame(); // If time runs out, restart
+                Respawn(); // Reset room number if time runs out
             }
         }
     }
@@ -68,8 +87,75 @@ public class PlayerNew : MonoBehaviour
         }
         else if ((other.gameObject.CompareTag("FrontDoor") || other.gameObject.CompareTag("BackDoor")) && hasKey)
         {
-            RestartGame(); // Restart when colliding with a door while holding the key
+            // Destroy the key when any door is touched (no matter if it's right or wrong)
+            DestroyKey();
+
+            // Check if the choice is correct and update room number
+            CheckDoorChoice(other.gameObject.tag);
         }
+    }
+
+    void DestroyKey()
+    {
+        if (heldKey != null)
+        {
+            Destroy(heldKey);  // Destroy the key the player is holding
+            heldKey = null;
+        }
+    }
+
+    void CheckDoorChoice(string chosenDoor)
+    {
+        bool correctChoice = (hasAnomaly && chosenDoor == "BackDoor") || (!hasAnomaly && chosenDoor == "FrontDoor");
+
+        if (correctChoice)
+        {
+            roomNumber++;  // Increment room number if the choice was correct
+        }
+        else
+        {
+            roomNumber = 0;  // Reset room number if the choice was incorrect
+        }
+
+        Respawn();  // Respawn the player and reinstantiate the key
+    }
+
+    void Respawn()
+    {
+        hasKey = false;
+        keyTimer = 0f;
+
+        characterController.enabled = false;
+        transform.position = respawnPosition;  // Respawn the player to the initial position
+        characterController.enabled = true;
+
+        SetUpNewRoom();  // Ensure a new key is instantiated at the correct position
+    }
+
+    void SetUpNewRoom()
+    {
+        hasAnomaly = Random.value > 0.5f;
+        UpdateRoomLabel();
+        UpdateInstructionText("Find the Key");
+
+        // Instantiate the key at the correct position
+        if (keyPrefab != null)
+        {
+            InstantiateKey();  // Instantiate a new key at the correct position
+        }
+    }
+
+    void InstantiateKey()
+    {
+        if (heldKey != null) Destroy(heldKey);  // Prevent multiple keys if any exists
+        heldKey = Instantiate(keyPrefab, keySpawnPosition, Quaternion.Euler(0, -45f, 0f));  // Instantiate the key at the KeyStand's position
+        heldKey.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);  // Scale the key appropriately
+        heldKey.tag = "Key";  // Ensure the correct tag is set for the key
+        BoxCollider boxCollider = heldKey.AddComponent<BoxCollider>();
+        boxCollider.center = new Vector3(-0.5f, 0f, -1.5f);
+        boxCollider.size = new Vector3(8f, 2f, 8f);
+        boxCollider.isTrigger = true;
+
     }
 
     void OnTriggerExit(Collider other)
@@ -89,13 +175,8 @@ public class PlayerNew : MonoBehaviour
         heldKey.transform.localPosition = Vector3.zero;
         heldKey.transform.localRotation = Quaternion.identity;
         nearbyKey = null;
-        keyTimer = 0f; // Start the timer
+        keyTimer = 0f;
         UpdateInstructionText("Choose a Door!");
-    }
-
-    void RestartGame()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     void UpdateInstructionText(string newText)
@@ -104,6 +185,23 @@ public class PlayerNew : MonoBehaviour
         {
             instructionText.text = newText;
         }
+    }
+
+    void UpdateRoomLabel()
+    {
+        if (roomLabel != null)
+        {
+            roomLabel.text = "Room " + roomNumber;
+        }
+    }
+
+    void ToggleInstructions()
+    {
+        isPaused = !isPaused;
+        instructionPanel.SetActive(isPaused);
+        Time.timeScale = isPaused ? 0 : 1;
+        Cursor.lockState = isPaused ? CursorLockMode.None : CursorLockMode.Locked;
+        Cursor.visible = isPaused;
     }
 
     Vector3 gravityVelocity = Vector3.zero;
@@ -120,7 +218,7 @@ public class PlayerNew : MonoBehaviour
         characterController.Move(gravityVelocity * Time.deltaTime);
     }
 
-        public void MoveWithCC(Vector3 direction)
+    public void MoveWithCC(Vector3 direction)
     {
         characterController.Move(direction * playerSpeed * Time.deltaTime);
     }
