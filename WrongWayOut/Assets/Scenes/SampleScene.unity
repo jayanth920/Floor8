@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 1, g: 1, b: 1, a: 1}
+  m_AmbientSkyColor: {r: 0, g: 0, b: 0, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
@@ -568,7 +568,7 @@ Camera:
   m_GameObject: {fileID: 330585543}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -1354,12 +1354,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 934926938}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.597642, y: 5.8117623, z: 5.592646}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -4.4073524, y: -9.188238, z: 17.820644}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 715069326}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &973472266
 PrefabInstance:
@@ -2025,7 +2025,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Version: 3
   m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 1
+  m_AdditionalLightsShadowResolutionTier: -1
   m_LightLayerMask: 1
   m_RenderingLayers: 4294967295
   m_CustomShadowLayers: 0
@@ -2045,14 +2045,14 @@ Light:
   serializedVersion: 11
   m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 40
-  m_Range: 20
-  m_SpotAngle: 54
-  m_InnerSpotAngle: 44
+  m_Intensity: 50
+  m_Range: 10
+  m_SpotAngle: 41
+  m_InnerSpotAngle: 35
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
-    m_Resolution: -1
+    m_Resolution: 128
     m_CustomResolution: -1
     m_Strength: 1
     m_Bias: 0.05
@@ -2087,7 +2087,7 @@ Light:
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
+  m_BounceIntensity: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
@@ -3095,9 +3095,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 747861088}
     - target: {fileID: 2198409268853046392, guid: 551372a0626318141bbe1192814a57a6, type: 3}
+      propertyPath: flashlight
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198409268853046392, guid: 551372a0626318141bbe1192814a57a6, type: 3}
       propertyPath: playerBody
       value: 
       objectReference: {fileID: 715069326}
+    - target: {fileID: 2198409268853046392, guid: 551372a0626318141bbe1192814a57a6, type: 3}
+      propertyPath: playerSpeed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2198409268853046392, guid: 551372a0626318141bbe1192814a57a6, type: 3}
       propertyPath: instructionText
       value: 
@@ -3118,6 +3126,10 @@ PrefabInstance:
       propertyPath: mouseSensitivityY
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2198409268853046392, guid: 551372a0626318141bbe1192814a57a6, type: 3}
+      propertyPath: flashlightController
+      value: 
+      objectReference: {fileID: 1620356739}
     - target: {fileID: 2286071371021444351, guid: 551372a0626318141bbe1192814a57a6, type: 3}
       propertyPath: m_Constraints
       value: 112
@@ -3161,6 +3173,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1907508880118318906, guid: 551372a0626318141bbe1192814a57a6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1973175331}
+    - targetCorrespondingSourceObject: {fileID: 1907508880118318906, guid: 551372a0626318141bbe1192814a57a6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 934926940}
     - targetCorrespondingSourceObject: {fileID: 1907508880118318906, guid: 551372a0626318141bbe1192814a57a6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 747861088}
@@ -3295,6 +3310,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ground
       objectReference: {fileID: 0}
+    - target: {fileID: 7653430904629351838, guid: 9df3fa288f648ac479381bd216bf5a02, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3310,7 +3329,6 @@ SceneRoots:
   - {fileID: 8772859249774447520}
   - {fileID: 3950266536673099248}
   - {fileID: 2008903250}
-  - {fileID: 934926940}
   - {fileID: 2060226665}
   - {fileID: 8051570633908027687}
   - {fileID: 651585872}
