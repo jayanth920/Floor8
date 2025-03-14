@@ -8,6 +8,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/WrongWayOutMain.unity
+    guid: bb5db97c5df005144933e52ecff6640a
+  - enabled: 1
+    path: Assets/Scenes/Win.unity
+    guid: c7dcf80d456b983499dc398b6f66ef7a
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

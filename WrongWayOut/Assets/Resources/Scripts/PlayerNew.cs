@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Collections.Generic;
+using System.Collections;
 
 public class PlayerNew : MonoBehaviour
 {
@@ -33,6 +35,13 @@ public class PlayerNew : MonoBehaviour
     public float mouseSensitivityX = 2.0f;
     public float mouseSensitivityY = 2.0f;
     public Transform playerBody;
+
+    [Header("Anomaly Prefabs")]
+    private List<System.Action> anomalies = new List<System.Action>();
+    private List<GameObject> activeAnomalies = new List<GameObject>();
+
+    public GameObject plantPrefab; // Assign this in the Unity Inspector
+
 
     private float xRotation = 0f;
     private bool isPaused = false;
@@ -111,6 +120,14 @@ public class PlayerNew : MonoBehaviour
         if (correctChoice)
         {
             roomNumber++;  // Increment room number if the choice was correct
+
+            if (roomNumber > 5) // If player completes room 5
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                SceneManager.LoadScene("Win"); // Load the win scene
+                return;
+            }
         }
         else
         {
@@ -119,6 +136,7 @@ public class PlayerNew : MonoBehaviour
 
         Respawn();  // Respawn the player and reinstantiate the key
     }
+
 
     void Respawn()
     {
@@ -132,18 +150,49 @@ public class PlayerNew : MonoBehaviour
         SetUpNewRoom();  // Ensure a new key is instantiated at the correct position
     }
 
+
+
+
     void SetUpNewRoom()
     {
+        // Remove previous anomalies before setting up the new room
+        ClearAnomalies();
+
         hasAnomaly = Random.value > 0.5f;
+        Debug.Log("Anomaly: " + hasAnomaly);
+
         UpdateRoomLabel();
         UpdateInstructionText("Find the Key");
+
+        // Add anomalies to the list
+        anomalies.Clear();
+        anomalies.Add(AddExtraPlant);
+
+        // If anomaly is active, pick a random one
+        if (hasAnomaly && anomalies.Count > 0)
+        {
+            int index = Random.Range(0, anomalies.Count);
+            anomalies[index].Invoke();
+        }
 
         // Instantiate the key at the correct position
         if (keyPrefab != null)
         {
-            InstantiateKey();  // Instantiate a new key at the correct position
+            InstantiateKey();
         }
     }
+
+    void ClearAnomalies()
+    {
+        foreach (GameObject anomaly in activeAnomalies)
+        {
+            Destroy(anomaly);
+        }
+        activeAnomalies.Clear();
+    }
+
+
+
 
     void InstantiateKey()
     {
@@ -155,7 +204,6 @@ public class PlayerNew : MonoBehaviour
         boxCollider.center = new Vector3(-0.5f, 0f, -1.5f);
         boxCollider.size = new Vector3(8f, 2f, 8f);
         boxCollider.isTrigger = true;
-
     }
 
     void OnTriggerExit(Collider other)
@@ -234,4 +282,18 @@ public class PlayerNew : MonoBehaviour
 
         playerBody.Rotate(Vector3.up * mouseX);
     }
+
+    void AddExtraPlant()
+    {
+        if (plantPrefab != null)
+        {
+            GameObject newPlant = Instantiate(plantPrefab, new Vector3(5.5f, 0f, 7.3f), Quaternion.identity);
+            activeAnomalies.Add(newPlant); // Store reference
+            Debug.Log("Anomaly Triggered: Extra Plant Added");
+        }
+    }
+
+
+
+
 }

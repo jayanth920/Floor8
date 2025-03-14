@@ -8,6 +8,8 @@ TagManager:
   - Door31
   - T1
   - T2
+  - FrontDoor
+  - BackDoor
   layers:
   - Default
   - TransparentFX
