@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class Crosshair : MonoBehaviour
 {
     public Camera playerCamera;
-    public float interactionRange = 5f;  // Maximum range for interaction
+    public float interactionRange = 2f;  // Maximum range for interaction
     public LayerMask interactableLayer;
 public Image crosshairImage; // The UI Image (crosshair)
 

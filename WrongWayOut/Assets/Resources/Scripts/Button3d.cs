@@ -1,11 +1,20 @@
 using UnityEngine;
+
 public class Button3d : MonoBehaviour
 {
+    // Reference to the ElevatorController
+    public ElevatorController elevatorController;
+
     // Action to perform when clicked
     public void OnClickAction()
     {
         Debug.Log(gameObject.name + " clicked!");
-        // You can add more actions here (e.g., load a new scene, enable/disable objects)
+
+        // Close the elevator doors when the button is clicked
+        if (elevatorController != null)
+        {
+            elevatorController.CloseElevatorDoors();  // Trigger the door closing
+        }
     }
 
     // Detect the mouse click
