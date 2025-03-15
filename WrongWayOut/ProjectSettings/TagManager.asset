@@ -10,11 +10,13 @@ TagManager:
   - T2
   - FrontDoor
   - BackDoor
+  - YesButton
+  - NoButton
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Interactable
   - Water
   - UI
   - 
