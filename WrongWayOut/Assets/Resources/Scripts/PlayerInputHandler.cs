@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerInputHandler : MonoBehaviour
 {
-    public PlayerNew player;
+    public PlayerNew1 player;
     public Transform cameraTransform; // Reference to the FPS camera
 
     void Update()

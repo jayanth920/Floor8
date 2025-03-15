@@ -8,7 +8,9 @@ public class PlayerNew : MonoBehaviour
 {
     [Header("UI Elements")]
     public TextMeshProUGUI instructionText;
-    public TextMeshProUGUI roomLabel;
+    // public TextMeshProUGUI roomLabel;
+    public TextMeshPro roomNumberText; // Assign this in the Inspector
+
     public GameObject instructionPanel;
 
     [Header("Movement")]
@@ -237,9 +239,9 @@ public class PlayerNew : MonoBehaviour
 
     void UpdateRoomLabel()
     {
-        if (roomLabel != null)
+        if (roomNumberText != null)
         {
-            roomLabel.text = "Room " + roomNumber;
+            roomNumberText.text = "Room " + roomNumber;
         }
     }
 
