@@ -12,6 +12,7 @@ TagManager:
   - BackDoor
   - YesButton
   - NoButton
+  - LiftButton
   layers:
   - Default
   - TransparentFX

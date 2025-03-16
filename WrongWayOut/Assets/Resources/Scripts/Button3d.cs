@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class Button3d : MonoBehaviour
 {
@@ -8,12 +9,17 @@ public class Button3d : MonoBehaviour
     // Action to perform when clicked
     public void OnClickAction()
     {
-        Debug.Log(gameObject.name + " clicked!");
+        Debug.Log(gameObject.name + " button3d Working!");
 
-        // Close the elevator doors when the button is clicked
-        if (elevatorController != null)
+        // Open the elevator doors when the button is clicked (for the LiftButton)
+        if (elevatorController != null && gameObject.name != "LiftButton")
         {
-            elevatorController.CloseElevatorDoors();  // Trigger the door closing
+            // Open doors when the button is pressed outside
+            elevatorController.StartCoroutine(elevatorController.CloseAndOpenDoors());
+        } else if (elevatorController != null && gameObject.name == "LiftButton")
+        {
+            // Open doors when the button is pressed from outside
+            elevatorController.StartCoroutine(elevatorController.OpenDoors());
         }
     }
 

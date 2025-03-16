@@ -4,41 +4,42 @@ using UnityEngine.UI;
 public class Crosshair : MonoBehaviour
 {
     public Camera playerCamera;
-    public float interactionRange = 2f;  // Maximum range for interaction
+    public float interactionRange = 5f;  // Maximum range for interaction
     public LayerMask interactableLayer;
-public Image crosshairImage; // The UI Image (crosshair)
+    public Image crosshairImage; // The UI Image (crosshair)
 
-void Update()
-{
-    Ray ray = playerCamera.ScreenPointToRay(new Vector2(Screen.width / 2, Screen.height / 2)); 
-    RaycastHit hit;
-
-        Debug.DrawRay(ray.origin, ray.direction * 5f, Color.green, 0.1f);  // 5f is the range of the ray, adjust as needed
-
-
-    if (Physics.Raycast(ray, out hit, interactionRange, interactableLayer))
+    void Update()
     {
-        crosshairImage.enabled = true;  // Show crosshair when aiming at button
+        // Raycast directly from the camera forward
+        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        RaycastHit hit;
 
-        if (Input.GetMouseButtonDown(0))  // Left-click
+        // Debug to visualize the ray in the Scene View
+        Debug.DrawRay(ray.origin, ray.direction * interactionRange, Color.green, 0.1f);
+
+        if (Physics.Raycast(ray, out hit, interactionRange, interactableLayer))
         {
-            GameObject hitObject = hit.transform.gameObject;
-            if (hitObject.CompareTag("YesButton"))
+            crosshairImage.enabled = true;  // Show crosshair when aiming at button
+            // Debug.Log("Raycast hit: " + hit.transform.name); // Debug to check what is being hit
+
+            if (Input.GetMouseButtonDown(0))  // Left-click
             {
-                Debug.Log("Yes button clicked");
-                hitObject.GetComponent<Button3d>().OnClickAction();
-            }
-            else if (hitObject.CompareTag("NoButton"))
-            {
-                Debug.Log("No button clicked");
-                hitObject.GetComponent<Button3d>().OnClickAction();
+                GameObject hitObject = hit.transform.gameObject;
+                if (hitObject.CompareTag("YesButton"))
+                {
+                    Debug.Log("Yes button clicked");
+                    hitObject.GetComponent<Button3d>().OnClickAction();
+                }
+                else if (hitObject.CompareTag("NoButton"))
+                {
+                    Debug.Log("No button clicked");
+                    hitObject.GetComponent<Button3d>().OnClickAction();
+                }
             }
         }
+        else
+        {
+            crosshairImage.enabled = false;  // Hide crosshair when not aiming at button
+        }
     }
-    else
-    {
-        crosshairImage.enabled = false;  // Hide crosshair when not aiming at button
-    }
-}
-
 }

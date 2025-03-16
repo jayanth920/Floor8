@@ -1,5 +1,4 @@
 
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -30,6 +29,15 @@ public class PlayerInputHandler : MonoBehaviour
 
         if (Input.GetKey(KeyCode.D))
             finalMovement += playerRight;
+
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        {
+            player.playerSpeed = 7f;  // Increase speed when Shift is pressed
+        }
+        else
+        {
+            player.playerSpeed = 5f; // Reset to default speed when Shift is not pressed
+        }
 
         finalMovement.Normalize();
 

@@ -6,15 +6,16 @@ using System.Collections;
 
 public class PlayerNew1 : MonoBehaviour
 {
-    [Header("UI Elements")]
-    public TextMeshProUGUI instructionText;
-    // public TextMeshProUGUI roomLabel;
-    public TextMeshPro roomNumberText; // Assign this in the Inspector
+    // [Header("UI Elements")]
+    // public TextMeshProUGUI instructionText;
+    // // public TextMeshProUGUI roomLabel;
+    // public TextMeshPro roomNumberText; // Assign this in the Inspector
 
-    public GameObject instructionPanel;
+    // public GameObject instructionPanel;
 
-    [Header("Movement")]
-    public float playerSpeed = 10.0f;
+    [HideInInspector]
+    public float playerSpeed = 5.0f;
+    [HideInInspector]
     public float gravity = -9.8f;
     CharacterController characterController;
 
@@ -44,7 +45,7 @@ public class PlayerNew1 : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        instructionPanel.SetActive(false);
+        // instructionPanel.SetActive(false);
 
         SetUpNewRoom();
     }
@@ -52,7 +53,6 @@ public class PlayerNew1 : MonoBehaviour
     void Update()
     {
 
-        
         if (Input.GetKeyDown(KeyCode.I))
         {
             ToggleInstructions();
@@ -69,7 +69,10 @@ public class PlayerNew1 : MonoBehaviour
 
     }
 
+        void OnTriggerExit(Collider other)
+    {
 
+    }
 
     void Respawn()
     {
@@ -80,9 +83,6 @@ public class PlayerNew1 : MonoBehaviour
         SetUpNewRoom();
     }
 
-
-
-
     void SetUpNewRoom()
     {
         // Remove previous anomalies before setting up the new room
@@ -91,7 +91,7 @@ public class PlayerNew1 : MonoBehaviour
         hasAnomaly = Random.value > 0.5f;
         Debug.Log("Anomaly: " + hasAnomaly);
 
-        UpdateRoomLabel();
+        // UpdateRoomLabel();
 
         // Add anomalies to the list
         anomalies.Clear();
@@ -102,8 +102,6 @@ public class PlayerNew1 : MonoBehaviour
             int index = Random.Range(0, anomalies.Count);
             anomalies[index].Invoke();
         }
-
-
     }
 
     void ClearAnomalies()
@@ -115,41 +113,26 @@ public class PlayerNew1 : MonoBehaviour
         activeAnomalies.Clear();
     }
 
+    // void UpdateInstructionText(string newText)
+    // {
+    //     if (instructionText != null)
+    //     {
+    //         instructionText.text = newText;
+    //     }
+    // }
 
-
-
-
-
-    void OnTriggerExit(Collider other)
-    {
-
-    }
-
-    void PickupKey()
-    {
-
-    }
-
-    void UpdateInstructionText(string newText)
-    {
-        if (instructionText != null)
-        {
-            instructionText.text = newText;
-        }
-    }
-
-    void UpdateRoomLabel()
-    {
-        if (roomNumberText != null)
-        {
-            roomNumberText.text = "Room " + roomNumber;
-        }
-    }
+    // void UpdateRoomLabel()
+    // {
+    //     if (roomNumberText != null)
+    //     {
+    //         roomNumberText.text = "Room " + roomNumber;
+    //     }
+    // }
 
     void ToggleInstructions()
     {
         isPaused = !isPaused;
-        instructionPanel.SetActive(isPaused);
+        // instructionPanel.SetActive(isPaused);
         Time.timeScale = isPaused ? 0 : 1;
         Cursor.lockState = isPaused ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = isPaused;
