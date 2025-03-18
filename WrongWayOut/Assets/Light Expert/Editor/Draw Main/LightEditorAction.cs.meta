@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 8a4829a240c39c543bdb855f4d0fb2f0
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212801
+  packageName: Light Controller - Universal
+  packageVersion: 1.0.0
+  assetPath: Assets/Light Expert/Editor/Draw Main/LightEditorAction.cs
+  uploadId: 486706

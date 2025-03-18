@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: abbbe4e9b69684f42ac6a129c6149c3e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212801
+  packageName: Light Controller - Universal
+  packageVersion: 1.0.0
+  assetPath: Assets/Light Expert/DemoScene/Scipts/PlayerLook.cs
+  uploadId: 486706

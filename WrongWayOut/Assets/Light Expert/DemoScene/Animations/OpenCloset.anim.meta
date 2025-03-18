@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 46efda6aed5458443a8a0da4ba2c6762
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212801
+  packageName: Light Controller - Universal
+  packageVersion: 1.0.0
+  assetPath: Assets/Light Expert/DemoScene/Animations/OpenCloset.anim
+  uploadId: 486706

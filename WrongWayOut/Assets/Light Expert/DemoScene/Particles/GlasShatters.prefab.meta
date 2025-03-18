@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: ae2db9650beee254b9e6690dfe4d317d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212801
+  packageName: Light Controller - Universal
+  packageVersion: 1.0.0
+  assetPath: Assets/Light Expert/DemoScene/Particles/GlasShatters.prefab
+  uploadId: 486706

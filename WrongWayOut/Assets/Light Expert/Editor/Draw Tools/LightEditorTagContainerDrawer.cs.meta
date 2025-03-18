@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 1c1189a451d08dd4e8f6a8c8299acd24
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 212801
+  packageName: Light Controller - Universal
+  packageVersion: 1.0.0
+  assetPath: Assets/Light Expert/Editor/Draw Tools/LightEditorTagContainerDrawer.cs
+  uploadId: 486706

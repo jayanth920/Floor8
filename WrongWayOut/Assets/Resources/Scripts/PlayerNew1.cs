@@ -14,7 +14,7 @@ public class PlayerNew1 : MonoBehaviour
     // public GameObject instructionPanel;
 
     [HideInInspector]
-    public float playerSpeed = 5.0f;
+    public float playerSpeed = 7.0f;
     [HideInInspector]
     public float gravity = -9.8f;
     CharacterController characterController;
