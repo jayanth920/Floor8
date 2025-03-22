@@ -3,6 +3,7 @@ using UnityEngine;
 public class InvisibleDetector : MonoBehaviour
 {
     // Reference to the ElevatorController
+    [HideInInspector]
     public ElevatorController elevatorController;
 
     void Start()

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class ElevatorController : MonoBehaviour
 {
@@ -21,6 +22,9 @@ public class ElevatorController : MonoBehaviour
     private bool isMoving = false;
 
     public GameObject invisiblePrefab;
+
+    public Button3d button3d;  // Add this field to your ElevatorController
+
 
 
     void Start()
@@ -53,15 +57,17 @@ public class ElevatorController : MonoBehaviour
         }
     }
 
-    public IEnumerator CloseAndOpenDoors()
+        public IEnumerator CloseAndOpenDoors()
     {
-        GameObject blocker = Instantiate(blockerPrefab, blockerPosition, Quaternion.identity);
+        // Disable the button click while doors are closing/opening
+        button3d.clicking = false; 
+
+        GameObject blocker = Instantiate(blockerPrefab, new Vector3(4.5f, 3f, -0.35f), Quaternion.identity);
         yield return new WaitForSeconds(1f);
 
         isMoving = true;
 
-        GameObject invisibleDetector = Instantiate(invisiblePrefab, new Vector3(4.5f, 3f, 1.5f), Quaternion.identity);
-
+        GameObject invisibleDetector = Instantiate(invisiblePrefab, new Vector3(4f, 3f, 2f), Quaternion.identity);
 
         // Close doors
         while (Vector3.Distance(leftDoor.position, leftDoorClosedPos) > 0.01f)
@@ -72,11 +78,10 @@ public class ElevatorController : MonoBehaviour
         }
 
         // Wait for 5 seconds inside the elevator
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
 
         // Destroy the blocker after 5 seconds
         Destroy(blocker);
-
 
         // Open doors
         while (Vector3.Distance(leftDoor.position, leftDoorOpenPos) > 0.01f)
@@ -88,19 +93,31 @@ public class ElevatorController : MonoBehaviour
 
         isMoving = false;
 
-
+        // Re-enable button clicking after doors are fully opened
+        button3d.clicking = true; 
     }
 
-    public void DetectPlayerExit(GameObject i)
+    public void DetectPlayerExit(GameObject detector)
     {
         // Close the doors when the player exits
-        StartCoroutine(CloseDoors(i));
+        StartCoroutine(CloseDoors(detector));
     }
 
-    public IEnumerator CloseDoors(GameObject i)
+    public IEnumerator CloseDoors(GameObject invdetector)
     {
-        Destroy(i);
-        GameObject blocker = Instantiate(blockerPrefab, new Vector3(4.5f, 3f, 0.5f), Quaternion.identity);
+    button3d.clicking = false;
+    
+    // Destroy the passed-in invisible detector
+    Destroy(invdetector);
+
+    // Find and destroy all other invisiblePrefab instances
+    GameObject[] invisibleObjects = GameObject.FindGameObjectsWithTag("Invisible");
+    foreach (GameObject obj in invisibleObjects)
+    {
+        Destroy(obj);
+    }
+
+        GameObject blocker = Instantiate(blockerPrefab, new Vector3(4.5f, 3f, 0.3f), Quaternion.identity);
         yield return new WaitForSeconds(2f);
         isMoving = true;
 
@@ -117,10 +134,12 @@ public class ElevatorController : MonoBehaviour
         // Just Close
         yield return true;
         isMoving = false;
+        button3d.clicking = true;
     }
 
     public IEnumerator OpenDoors()
     {
+        button3d.clicking = false;
         yield return new WaitForSeconds(1f);
 
         isMoving = true;
@@ -134,7 +153,7 @@ public class ElevatorController : MonoBehaviour
 
         // Just Open
         yield return true;
-
         isMoving = false;
+        button3d.clicking = true;
     }
 }

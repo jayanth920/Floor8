@@ -8,32 +8,25 @@ public class Crosshair : MonoBehaviour
     public LayerMask interactableLayer;
     public Image crosshairImage; // The UI Image (crosshair)
 
+    public Button3d button3d;
+
     void Update()
     {
-        // Raycast directly from the camera forward
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         RaycastHit hit;
 
-        // Debug to visualize the ray in the Scene View
         Debug.DrawRay(ray.origin, ray.direction * interactionRange, Color.green, 0.1f);
 
         if (Physics.Raycast(ray, out hit, interactionRange, interactableLayer))
         {
             crosshairImage.enabled = true;  // Show crosshair when aiming at button
-            // Debug.Log("Raycast hit: " + hit.transform.name); // Debug to check what is being hit
 
-            if (Input.GetMouseButtonDown(0))  // Left-click
+            if (Input.GetMouseButtonDown(0) && button3d.clicking)  // Left-click
             {
-                GameObject hitObject = hit.transform.gameObject;
-                if (hitObject.CompareTag("YesButton"))
+                Button3d button = hit.transform.GetComponent<Button3d>();
+                if (button != null)
                 {
-                    Debug.Log("Yes button clicked");
-                    hitObject.GetComponent<Button3d>().OnClickAction();
-                }
-                else if (hitObject.CompareTag("NoButton"))
-                {
-                    Debug.Log("No button clicked");
-                    hitObject.GetComponent<Button3d>().OnClickAction();
+                    button.ClickButton();  // Call PerformAction instead of OnClickAction
                 }
             }
         }

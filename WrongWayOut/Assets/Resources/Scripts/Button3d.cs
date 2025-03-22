@@ -3,30 +3,46 @@ using System.Collections;
 
 public class Button3d : MonoBehaviour
 {
-    // Reference to the ElevatorController
     public ElevatorController elevatorController;
-
-    // Action to perform when clicked
-    public void OnClickAction()
+    public PlayerNew1 player; // Assign in Inspector
+    [HideInInspector]
+    public bool clicking = true; // Control clicking state
+    
+    // Method to handle button press action
+    public void ClickButton()
     {
-        Debug.Log(gameObject.name + " button3d Working!");
+        if (!clicking)
+        {
+            return; // Do nothing if the button is disabled
+        }
+        
+        bool isYesButton = false; // Default value
+        
+        // Set isYesButton based on the button name or tag
+        if (gameObject.name == "YesButton") 
+        {
+            isYesButton = true;
+        }
+        else if (gameObject.name == "NoButton") 
+        {
+            isYesButton = false;
+        }
 
-        // Open the elevator doors when the button is clicked (for the LiftButton)
+        if (player != null)
+        {
+            player.VerifyAnomaly(isYesButton);  // Pass the isYesButton state to the player's method
+        }
+
+        // Trigger CloseAndOpenDoors
         if (elevatorController != null && gameObject.name != "LiftButton")
         {
-            // Open doors when the button is pressed outside
-            elevatorController.StartCoroutine(elevatorController.CloseAndOpenDoors());
-        } else if (elevatorController != null && gameObject.name == "LiftButton")
-        {
-            // Open doors when the button is pressed from outside
-            elevatorController.StartCoroutine(elevatorController.OpenDoors());
+            Debug.Log(gameObject.name + " pressed");
+            StartCoroutine(elevatorController.CloseAndOpenDoors());  // Run coroutine to close and open doors
         }
-    }
-
-    // Detect the mouse click
-    void OnMouseDown()
-    {
-        // This checks if the mouse is clicked on the object with this script
-        OnClickAction();
+        else if (elevatorController != null && gameObject.name == "LiftButton")
+        {
+            Debug.Log(gameObject.name + " pressed");
+            StartCoroutine(elevatorController.OpenDoors());
+        }
     }
 }

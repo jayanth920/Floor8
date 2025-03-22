@@ -13,6 +13,7 @@ TagManager:
   - YesButton
   - NoButton
   - LiftButton
+  - Invisible
   layers:
   - Default
   - TransparentFX

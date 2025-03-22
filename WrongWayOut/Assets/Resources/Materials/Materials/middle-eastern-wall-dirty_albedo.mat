@@ -50,7 +50,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Metallic: 0
-    - _Smoothness: 1
+    - _Smoothness: 0.789
     - _WorkflowMode: 0
     m_Colors: []
   m_BuildTextureStacks: []
