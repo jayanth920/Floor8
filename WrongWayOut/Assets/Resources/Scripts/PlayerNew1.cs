@@ -33,6 +33,11 @@ public class PlayerNew1 : MonoBehaviour
     private List<System.Action> anomalies = new List<System.Action>();
     private List<GameObject> activeAnomalies = new List<GameObject>();
 
+    [Header("Anomaly Settings")]
+    public GameObject zombiePrefab;  // Assign in Inspector
+    private string[] availableAnomalies = { "zombie" }; // List of anomalies
+    private string chosenAnomaly;
+
     private float xRotation = 0f;
     private bool isPaused = false;
 
@@ -69,7 +74,7 @@ public class PlayerNew1 : MonoBehaviour
 
     }
 
-        void OnTriggerExit(Collider other)
+    void OnTriggerExit(Collider other)
     {
 
     }
@@ -91,17 +96,17 @@ public class PlayerNew1 : MonoBehaviour
         hasAnomaly = Random.value > 0.5f;
         Debug.Log("Anomaly: " + hasAnomaly);
 
-        // UpdateRoomLabel();
+    if (hasAnomaly)
+    {
+        // Pick a random anomaly from the list
+        chosenAnomaly = availableAnomalies[Random.Range(0, availableAnomalies.Length)];
+        Debug.Log("Chosen Anomaly: " + chosenAnomaly);
 
-        // Add anomalies to the list
-        anomalies.Clear();
-
-        // If anomaly is active, pick a random one
-        if (hasAnomaly && anomalies.Count > 0)
+        if (chosenAnomaly == "zombie")
         {
-            int index = Random.Range(0, anomalies.Count);
-            anomalies[index].Invoke();
+            SpawnZombie();
         }
+    }
     }
 
     void ClearAnomalies()
@@ -170,6 +175,18 @@ public class PlayerNew1 : MonoBehaviour
     }
 
 
+void SpawnZombie()
+{
+    if (zombiePrefab != null)
+    {
+        GameObject zombie = Instantiate(zombiePrefab, new Vector3(37, 0f, 7), zombiePrefab.transform.rotation);
+        Debug.Log("Zombie Spawned!");
+    }
+    else
+    {
+        Debug.LogError("Zombie Prefab or Spawn Point not assigned!");
+    }
+}
 
 
 }

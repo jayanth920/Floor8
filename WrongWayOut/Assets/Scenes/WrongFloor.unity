@@ -3189,7 +3189,6 @@ GameObject:
   - component: {fileID: 643415610}
   - component: {fileID: 643415614}
   - component: {fileID: 643415613}
-  - component: {fileID: 643415615}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3347,28 +3346,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!95 &643415615
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 643415609}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1530bb2067f50124587315da84a77e9f, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &652978026
 GameObject:
   m_ObjectHideFlags: 0
@@ -4327,12 +4304,20 @@ PrefabInstance:
       value: Floor (35)
       objectReference: {fileID: 0}
     - target: {fileID: 6891794578866126933, guid: bfa01917b58aea1409087afc5139b6a8, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6891794578866126933, guid: bfa01917b58aea1409087afc5139b6a8, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6891794578866126933, guid: bfa01917b58aea1409087afc5139b6a8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 47
       objectReference: {fileID: 0}
     - target: {fileID: 6891794578866126933, guid: bfa01917b58aea1409087afc5139b6a8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.5
+      value: -0.49999905
       objectReference: {fileID: 0}
     - target: {fileID: 6891794578866126933, guid: bfa01917b58aea1409087afc5139b6a8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4344,11 +4329,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6891794578866126933, guid: bfa01917b58aea1409087afc5139b6a8, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6891794578866126933, guid: bfa01917b58aea1409087afc5139b6a8, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6891794578866126933, guid: bfa01917b58aea1409087afc5139b6a8, type: 3}
       propertyPath: m_LocalRotation.z
@@ -5312,6 +5297,7 @@ MonoBehaviour:
   mouseSensitivityX: 2
   mouseSensitivityY: 2
   playerBody: {fileID: 1019935000}
+  zombiePrefab: {fileID: 6219115317377448717, guid: d48727e5b520645408d37b213eae6932, type: 3}
 --- !u!114 &1019935021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5990,7 +5976,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7148229411942145606, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.221
+      value: 2.24
       objectReference: {fileID: 0}
     - target: {fileID: 7148229411942145606, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7071,7 +7057,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7148229411942145606, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.221
+      value: 2.24
       objectReference: {fileID: 0}
     - target: {fileID: 7148229411942145606, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7377,8 +7363,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3222305642451541646, guid: e9d5bbbb25ad4b242bf3bb62661fbb27, type: 3}
+      propertyPath: m_Range
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222305642451541646, guid: e9d5bbbb25ad4b242bf3bb62661fbb27, type: 3}
       propertyPath: m_Intensity
-      value: 7
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 3397311871358532314, guid: e9d5bbbb25ad4b242bf3bb62661fbb27, type: 3}
       propertyPath: m_Name
@@ -8952,6 +8942,79 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 845528cc7f285494caad56ef620bb7fe, type: 3}
+--- !u!1001 &1593650787
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 177059243109882327, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8c9e363d3dd04fc478663067b03d0252, type: 2}
+    - target: {fileID: 4695120187005114942, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
+      propertyPath: m_Name
+      value: railing (23)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7148229411942145606, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7148229411942145606, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7148229411942145606, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7148229411942145606, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 48.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7148229411942145606, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.243
+      objectReference: {fileID: 0}
+    - target: {fileID: 7148229411942145606, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7148229411942145606, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7148229411942145606, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7148229411942145606, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7148229411942145606, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7148229411942145606, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7148229411942145606, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7148229411942145606, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b02635e71aebfa04b8d32eedda9d5494, type: 3}
 --- !u!1001 &1608520257
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10607,7 +10670,7 @@ MonoBehaviour:
         InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
         Gain: 1
         LegacyInput: Mouse X
-        LegacyGain: 200
+        LegacyGain: 150
         CancelDeltaTime: 0
       InputValue: 0
       Driver:
@@ -10620,7 +10683,7 @@ MonoBehaviour:
         InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
         Gain: -1
         LegacyInput: Mouse Y
-        LegacyGain: -200
+        LegacyGain: -150
         CancelDeltaTime: 0
       InputValue: 0
       Driver:
@@ -14609,6 +14672,7 @@ SceneRoots:
   - {fileID: 988641277}
   - {fileID: 722255794}
   - {fileID: 554375446}
+  - {fileID: 1593650787}
   - {fileID: 99809807}
   - {fileID: 1563941717}
   - {fileID: 608672319}
