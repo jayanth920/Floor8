@@ -162,13 +162,22 @@ public class PlayerNew1 : MonoBehaviour
     {
         if (bloodStainPrefab != null)
         {
-            GameObject bloodStain = Instantiate(bloodStainPrefab, new Vector3(-11.2f, 0f, 1f), bloodStainPrefab.transform.rotation);
+
+            Vector3 startPos = new Vector3(4.5f, 9f, 2.5f);
+
+            GameObject bloodStain = Instantiate(bloodStainPrefab, startPos, bloodStainPrefab.transform.rotation);
             Debug.Log("Blood Stain Spawned!");
+
+            // Add to active anomalies list
             activeAnomalies.Add(bloodStain);
+
         }
         else
         {
             Debug.LogError("Blood Stain Prefab not assigned!");
         }
     }
+
+
+
 }
