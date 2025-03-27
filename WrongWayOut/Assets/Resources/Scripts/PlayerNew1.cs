@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PlayerNew1 : MonoBehaviour
 {
@@ -142,7 +143,19 @@ public class PlayerNew1 : MonoBehaviour
 
         UpdateFloorText();
         SetUpNewRoom();
+
+        if (currentFloor == 0)
+        {
+            LoadWinScene();
+        }
     }
+
+    void LoadWinScene()
+    {
+        Debug.Log("You won the game! Loading Win Scene...");
+        SceneManager.LoadScene("Win");
+    }
+
 
     void SpawnZombie()
     {
