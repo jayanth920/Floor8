@@ -21,10 +21,18 @@ public class PlayerNew1 : MonoBehaviour
     private List<GameObject> activeAnomalies = new List<GameObject>();
 
     [Header("Anomaly Settings")]
-    public GameObject zombiePrefab;  // Assign in Inspector
-    public GameObject bloodStainPrefab; // Assign in Inspector
-    private string[] availableAnomalies = { "zombie", "bloodstain" };
+    public GameObject zombiePrefab;
+    public GameObject bloodStainPrefab;
+    public GameObject creepyDollPrefab;
+    public GameObject photoFrameHouseOnPrefab;
+    public GameObject photoFrameHouseOffPrefab;
+
+    private string[] availableAnomalies = { "zombie", "bloodstain", "creepydoll", "photoframehouseon" };
     private string chosenAnomaly;
+
+    private List<string> anomalyHistory = new List<string>(); // Tracks last anomalies
+    private int consecutiveNoAnomalies = 0; // Tracks consecutive no anomaly cases
+
 
     private float xRotation = 0f;
 
@@ -48,28 +56,42 @@ public class PlayerNew1 : MonoBehaviour
 
     void SetUpNewRoom()
     {
-        // Clear any previous anomalies
         ClearAnomalies();
 
-        // Randomize if there is an anomaly or not
-        hasAnomaly = Random.value > 0.5f;
+        // Ensure that "no anomaly" doesn't happen more than twice in a row
+        if (consecutiveNoAnomalies >= 2)
+        {
+            hasAnomaly = true;
+        }
+        else
+        {
+            hasAnomaly = Random.value > 0.5f; // 50% chance
+        }
 
         Debug.Log("Anomaly: " + hasAnomaly);
 
-        // If anomaly is true, pick a random anomaly and spawn it
         if (hasAnomaly)
         {
-            chosenAnomaly = availableAnomalies[Random.Range(0, availableAnomalies.Length)];
+            chosenAnomaly = GetValidAnomaly();
             Debug.Log("Chosen Anomaly: " + chosenAnomaly);
 
             if (chosenAnomaly == "zombie")
                 SpawnZombie();
             else if (chosenAnomaly == "bloodstain")
                 SpawnBloodStain();
+            else if (chosenAnomaly == "creepydoll")
+                SpawnCreepyDoll();
+            else if (chosenAnomaly == "photoframehouseon")
+                SpawnPhotoFrameHouseOn();
+
+            anomalyHistory.Add(chosenAnomaly); // Store the anomaly
+            if (anomalyHistory.Count > 4) anomalyHistory.RemoveAt(0); // Keep history size to 4
+            consecutiveNoAnomalies = 0; // Reset counter
         }
         else
         {
-            chosenAnomaly = ""; // No anomaly
+            chosenAnomaly = "";
+            consecutiveNoAnomalies++; // Increase counter
         }
     }
 
@@ -77,10 +99,43 @@ public class PlayerNew1 : MonoBehaviour
     {
         foreach (GameObject anomaly in activeAnomalies)
         {
+            Debug.Log("Clearing Name : " + anomaly.name);
+            if (chosenAnomaly == "photoframehouseon")
+            {
+                Debug.Log("IN THE CONDITION.");
+                GameObject photoFrameHouseOff = Instantiate(photoFrameHouseOffPrefab, new Vector3(-15f, 6.5f, 0.544f), photoFrameHouseOffPrefab.transform.rotation);
+                Debug.Log("photoFrameHouseOff enabled normally.");
+            }
+
+            // Destroy other anomalies
             Destroy(anomaly);
+            Debug.Log(anomaly.name + " destroyed.");
         }
+
+        // Clear the list of active anomalies
         activeAnomalies.Clear();
     }
+
+
+    string GetValidAnomaly()
+    {
+        List<string> possibleAnomalies = new List<string>(availableAnomalies);
+
+        // Remove any anomaly that appeared in the last 3 floors
+        foreach (string recentAnomaly in anomalyHistory)
+        {
+            possibleAnomalies.Remove(recentAnomaly);
+        }
+
+        // If all anomalies were used recently, reset the list
+        if (possibleAnomalies.Count == 0)
+        {
+            possibleAnomalies = new List<string>(availableAnomalies);
+        }
+
+        return possibleAnomalies[Random.Range(0, possibleAnomalies.Count)];
+    }
+
 
     void UpdateFloorText()
     {
@@ -91,6 +146,7 @@ public class PlayerNew1 : MonoBehaviour
     }
 
     Vector3 gravityVelocity = Vector3.zero;
+
 
     void ApplyGravityWithCC()
     {
@@ -191,6 +247,41 @@ public class PlayerNew1 : MonoBehaviour
         }
     }
 
+    void SpawnCreepyDoll()
+    {
+        if (creepyDollPrefab != null)
+        {
+            Vector3 spawnPosition = new Vector3(4.5f, 7f, 0.7f);
+            GameObject creepyDoll = Instantiate(creepyDollPrefab, spawnPosition, creepyDollPrefab.transform.rotation);
 
+            Debug.Log("Creepy Doll Spawned!");
+
+            activeAnomalies.Add(creepyDoll);
+        }
+        else
+        {
+            Debug.LogError("Creepy Doll Prefab not assigned!");
+        }
+    }
+
+
+    void SpawnPhotoFrameHouseOn()
+    {
+        GameObject photoFrameHouseOff = GameObject.Find("photoFrameHouseOff");
+
+        if (photoFrameHouseOff != null)
+        {
+            Destroy(photoFrameHouseOff);
+            Debug.Log("photoFrameHouseOff delete.");
+        }
+        else
+        {
+            Debug.LogWarning("photoFrameHouseOff not found.");
+        }
+
+        GameObject photoFrameHouseOn = Instantiate(photoFrameHouseOnPrefab, new Vector3(-15f, 6.5f, 0.544f), photoFrameHouseOnPrefab.transform.rotation);
+        Debug.Log("photoFrameHouseOn Spawned! " + photoFrameHouseOn.name);
+        activeAnomalies.Add(photoFrameHouseOn);
+    }
 
 }

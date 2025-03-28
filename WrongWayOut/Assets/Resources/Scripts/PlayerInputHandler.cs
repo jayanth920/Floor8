@@ -7,6 +7,9 @@ public class PlayerInputHandler : MonoBehaviour
     public PlayerNew1 player;
     public Transform cameraTransform; // Reference to the FPS camera
 
+
+
+
     void Update()
     {
         // Instead of using cameraTransform, use the player's transform to determine movement
