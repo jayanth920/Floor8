@@ -37,8 +37,8 @@ public class PlayerNew1 : MonoBehaviour
     public Material regularEyeMat; 
     public Material hauntedEyeMat; 
 
-    // private string[] availableAnomalies = { "zombie", "bloodstain", "creepydoll", "photoframehouseon", "hauntedskin", "missingeyes", "hangman", "creepyeyes" };
-    private string[] availableAnomalies = { "creepyeyes", "hauntedskin", "missingeyes" };
+    private string[] availableAnomalies = { "zombie", "bloodstain", "creepydoll", "photoframehouseon", "hauntedskin", "missingeyes", "hangman" };
+    // private string[] availableAnomalies = { "creepyeyes", "hauntedskin", "missingeyes" };
     private string chosenAnomaly;
 
     private List<string> anomalyHistory = new List<string>(); // Tracks last anomalies
