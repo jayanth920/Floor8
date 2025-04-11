@@ -26,8 +26,19 @@ public class PlayerNew1 : MonoBehaviour
     public GameObject creepyDollPrefab;
     public GameObject photoFrameHouseOnPrefab;
     public GameObject photoFrameHouseOffPrefab;
+    public GameObject manSitting;
+    public Material normalSkinMat;
+    public Material hauntedSkinMat;
+    public GameObject manSitting2; 
+    public GameObject redLeftBallPrefab;
+    public GameObject redRightBallPrefab;
+    public GameObject hangmanPrefab;
+    public GameObject eyeFrame; 
+    public Material regularEyeMat; 
+    public Material hauntedEyeMat; 
 
-    private string[] availableAnomalies = { "zombie", "bloodstain", "creepydoll", "photoframehouseon" };
+    // private string[] availableAnomalies = { "zombie", "bloodstain", "creepydoll", "photoframehouseon", "hauntedskin", "missingeyes", "hangman", "creepyeyes" };
+    private string[] availableAnomalies = { "creepyeyes", "hauntedskin", "missingeyes" };
     private string chosenAnomaly;
 
     private List<string> anomalyHistory = new List<string>(); // Tracks last anomalies
@@ -68,7 +79,6 @@ public class PlayerNew1 : MonoBehaviour
             hasAnomaly = Random.value > 0.5f; // 50% chance
         }
 
-        Debug.Log("Anomaly: " + hasAnomaly);
 
         if (hasAnomaly)
         {
@@ -77,12 +87,22 @@ public class PlayerNew1 : MonoBehaviour
 
             if (chosenAnomaly == "zombie")
                 SpawnZombie();
-            else if (chosenAnomaly == "bloodstain")
+            if (chosenAnomaly == "bloodstain")
                 SpawnBloodStain();
-            else if (chosenAnomaly == "creepydoll")
+            if (chosenAnomaly == "creepydoll")
                 SpawnCreepyDoll();
-            else if (chosenAnomaly == "photoframehouseon")
+            if (chosenAnomaly == "photoframehouseon")
                 SpawnPhotoFrameHouseOn();
+            if (chosenAnomaly == "hauntedskin")
+                ApplyHauntedSkin();
+            if (chosenAnomaly == "missingeyes")
+                RemoveRedEyes();
+            if (chosenAnomaly == "hangman")
+                SpawnHangman();
+            if (chosenAnomaly == "creepyeyes")
+                ApplyEyeFrame();
+
+            
 
             anomalyHistory.Add(chosenAnomaly); // Store the anomaly
             if (anomalyHistory.Count > 4) anomalyHistory.RemoveAt(0); // Keep history size to 4
@@ -97,22 +117,28 @@ public class PlayerNew1 : MonoBehaviour
 
     void ClearAnomalies()
     {
+        Debug.Log("Chosen anomaly to clear: " + chosenAnomaly);
+        if (chosenAnomaly == "photoframehouseon")
+        {
+            GameObject photoFrameHouseOff = Instantiate(photoFrameHouseOffPrefab, new Vector3(-15f, 6.5f, 0.544f), photoFrameHouseOffPrefab.transform.rotation);
+            Debug.Log("photoFrameHouseOff enabled normally.");
+        }
+        if (chosenAnomaly == "hauntedskin")
+        {
+            SetNormalSkin();
+        }
+        if (chosenAnomaly == "missingeyes")
+        {
+            RestoreRedEyes();
+        }
+        if (chosenAnomaly == "creepyeyes")
+            RestoreEyes();
+
         foreach (GameObject anomaly in activeAnomalies)
         {
-            Debug.Log("Clearing Name : " + anomaly.name);
-            if (chosenAnomaly == "photoframehouseon")
-            {
-                Debug.Log("IN THE CONDITION.");
-                GameObject photoFrameHouseOff = Instantiate(photoFrameHouseOffPrefab, new Vector3(-15f, 6.5f, 0.544f), photoFrameHouseOffPrefab.transform.rotation);
-                Debug.Log("photoFrameHouseOff enabled normally.");
-            }
-
-            // Destroy other anomalies
             Destroy(anomaly);
-            Debug.Log(anomaly.name + " destroyed.");
         }
 
-        // Clear the list of active anomalies
         activeAnomalies.Clear();
     }
 
@@ -188,12 +214,10 @@ public class PlayerNew1 : MonoBehaviour
 
         if ((hasAnomaly && userSaidYes) || (!hasAnomaly && !userSaidYes))
         {
-            Debug.Log("Correct! Moving to the next floor.");
             currentFloor--; // Always decrease floor if correct
         }
         else
         {
-            Debug.Log("Wrong! Resetting to floor 8.");
             currentFloor = 8; // Reset if wrong
         }
 
@@ -208,7 +232,7 @@ public class PlayerNew1 : MonoBehaviour
 
     void LoadWinScene()
     {
-        Debug.Log("You won the game! Loading Win Scene...");
+        // Debug.Log("You won the game! Loading Win Scene...");
         SceneManager.LoadScene("Win");
     }
 
@@ -218,13 +242,9 @@ public class PlayerNew1 : MonoBehaviour
         if (zombiePrefab != null)
         {
             GameObject zombie = Instantiate(zombiePrefab, new Vector3(37, 0f, 7), zombiePrefab.transform.rotation);
-            Debug.Log("Zombie Spawned!");
             activeAnomalies.Add(zombie);
         }
-        else
-        {
-            Debug.LogError("Zombie Prefab or Spawn Point not assigned!");
-        }
+
     }
 
     void SpawnBloodStain()
@@ -235,15 +255,9 @@ public class PlayerNew1 : MonoBehaviour
             Vector3 startPos = new Vector3(4.5f, 9f, 2.5f);
 
             GameObject bloodStain = Instantiate(bloodStainPrefab, startPos, bloodStainPrefab.transform.rotation);
-            Debug.Log("Blood Stain Spawned!");
 
-            // Add to active anomalies list
             activeAnomalies.Add(bloodStain);
 
-        }
-        else
-        {
-            Debug.LogError("Blood Stain Prefab not assigned!");
         }
     }
 
@@ -254,13 +268,7 @@ public class PlayerNew1 : MonoBehaviour
             Vector3 spawnPosition = new Vector3(4.5f, 7f, 0.7f);
             GameObject creepyDoll = Instantiate(creepyDollPrefab, spawnPosition, creepyDollPrefab.transform.rotation);
 
-            Debug.Log("Creepy Doll Spawned!");
-
             activeAnomalies.Add(creepyDoll);
-        }
-        else
-        {
-            Debug.LogError("Creepy Doll Prefab not assigned!");
         }
     }
 
@@ -272,16 +280,146 @@ public class PlayerNew1 : MonoBehaviour
         if (photoFrameHouseOff != null)
         {
             Destroy(photoFrameHouseOff);
-            Debug.Log("photoFrameHouseOff delete.");
-        }
-        else
-        {
-            Debug.LogWarning("photoFrameHouseOff not found.");
         }
 
         GameObject photoFrameHouseOn = Instantiate(photoFrameHouseOnPrefab, new Vector3(-15f, 6.5f, 0.544f), photoFrameHouseOnPrefab.transform.rotation);
-        Debug.Log("photoFrameHouseOn Spawned! " + photoFrameHouseOn.name);
         activeAnomalies.Add(photoFrameHouseOn);
     }
+
+    void ApplyHauntedSkin()
+    {
+        if (manSitting == null || hauntedSkinMat == null)
+        {
+            Debug.LogError("manSitting or hauntedSkinMat is not assigned!");
+            return;
+        }
+
+        Transform object7 = manSitting.transform.Find("Object_7");
+        if (object7 != null)
+        {
+            Renderer renderer = object7.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                renderer.material = hauntedSkinMat;
+            }
+        }
+    }
+
+    void SetNormalSkin()
+    {
+        if (manSitting == null || normalSkinMat == null)
+        {
+            Debug.LogError("manSitting or normalSkinMat is not assigned!");
+            return;
+        }
+
+        Transform object7 = manSitting.transform.Find("Object_7");
+
+        if (object7 != null)
+        {
+            Renderer renderer = object7.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                renderer.material = normalSkinMat;
+            }
+        }
+    }
+
+    void RemoveRedEyes()
+    {
+        Transform leftEye = manSitting2.transform.Find("LeftEye/RedLeftBall");
+        Transform rightEye = manSitting2.transform.Find("RightEye/RedRightBall");
+
+        if (leftEye != null) Destroy(leftEye.gameObject);
+        if (rightEye != null) Destroy(rightEye.gameObject);
+    }
+
+    void RestoreRedEyes()
+    {
+        Transform leftEyeParent = manSitting2.transform.Find("LeftEye");
+        Transform rightEyeParent = manSitting2.transform.Find("RightEye");
+
+        if (leftEyeParent != null && redLeftBallPrefab != null)
+        {
+            GameObject newLeft = Instantiate(redLeftBallPrefab, leftEyeParent);
+            newLeft.transform.localPosition = new Vector3(0f, -0.11f, 0.26f);
+        }
+
+        if (rightEyeParent != null && redRightBallPrefab != null)
+        {
+            GameObject newRight = Instantiate(redRightBallPrefab, rightEyeParent);
+            newRight.transform.localPosition = new Vector3(0.06f, -0.11f, 0.26f);
+        }
+    }
+
+    void SpawnHangman()
+    {
+        GameObject hangmanDrawing = Instantiate(hangmanPrefab, new Vector3(9.3f, 3.281f, 0.51f), hangmanPrefab.transform.rotation);
+        activeAnomalies.Add(hangmanDrawing);
+    }
+
+
+void ApplyEyeFrame()
+{
+    if (eyeFrame == null || hauntedEyeMat == null)
+    {
+        Debug.LogError("eyeFrame or hauntedEyeMat is not assigned!");
+        return;
+    }
+
+    Debug.Log("Applying Eye Frame");
+
+    Transform backFrame = eyeFrame.transform.Find("BackBase");
+    Debug.Log("init Applying Eye Frame");
+
+    if (backFrame != null)
+    {
+        Renderer renderer = backFrame.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            renderer.material = hauntedEyeMat;
+        }
+        else
+        {
+            Debug.LogWarning("Renderer not found on 'Back Base'");
+        }
+    }
+    else
+    {
+        Debug.LogWarning("'Back Base' not found under EyeFrame");
+    }
+}
+
+
+void RestoreEyes()
+{
+    if (eyeFrame == null || regularEyeMat == null)
+    {
+        Debug.LogError("eyeFrame or regularEyeMat is not assigned!");
+        return;
+    }
+
+    Debug.Log("Restoring Eyes");
+
+    Transform backFrame = eyeFrame.transform.Find("BackBase");
+    if (backFrame != null)
+    {
+        Renderer renderer = backFrame.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            renderer.material = regularEyeMat;
+        }
+        else
+        {
+            Debug.LogWarning("Renderer not found on 'Back Base'");
+        }
+    }
+    else
+    {
+        Debug.LogWarning("'Back Base' not found under EyeFrame");
+    }
+}
+
+
 
 }
