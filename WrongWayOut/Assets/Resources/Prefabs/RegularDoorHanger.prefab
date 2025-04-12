@@ -198,15 +198,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6a2919fb5f10a6a4a98dcda3f151e172, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 32.608
+      value: 32.602
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6a2919fb5f10a6a4a98dcda3f151e172, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.28
+      value: 2.283
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6a2919fb5f10a6a4a98dcda3f151e172, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.542
+      value: 0.601
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6a2919fb5f10a6a4a98dcda3f151e172, type: 3}
       propertyPath: m_LocalRotation.w
@@ -243,7 +243,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 6a2919fb5f10a6a4a98dcda3f151e172, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 17d2018a2c430e04f914b00ae9149b0d, type: 2}
+      objectReference: {fileID: 2100000, guid: bdfeb136afc35f244bc18cddda6442f1, type: 2}
     - target: {fileID: 919132149155446097, guid: 6a2919fb5f10a6a4a98dcda3f151e172, type: 3}
       propertyPath: m_Name
       value: RegularDoorHanger

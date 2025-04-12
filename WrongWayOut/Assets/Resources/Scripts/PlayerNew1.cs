@@ -33,12 +33,13 @@ public class PlayerNew1 : MonoBehaviour
     public GameObject redLeftBallPrefab;
     public GameObject redRightBallPrefab;
     public GameObject hangmanPrefab;
-    public GameObject eyeFrame; 
-    public Material regularEyeMat; 
-    public Material hauntedEyeMat; 
+    public GameObject regularEyeFrame; 
+    public GameObject creepyEyeFrame;
+    public GameObject regularExitPrefab;
+    public GameObject creepyExitPrefab;
 
-    private string[] availableAnomalies = { "zombie", "bloodstain", "creepydoll", "photoframehouseon", "hauntedskin", "missingeyes", "hangman" };
-    // private string[] availableAnomalies = { "creepyeyes", "hauntedskin", "missingeyes" };
+    // private string[] availableAnomalies = { "zombie", "bloodstain", "creepydoll", "photoframehouseon", "hauntedskin", "missingeyes", "hangman", "creepyeyes", "deadsign" };
+    private string[] availableAnomalies = { "deadsign", "hauntedskin", "hangman" };
     private string chosenAnomaly;
 
     private List<string> anomalyHistory = new List<string>(); // Tracks last anomalies
@@ -100,7 +101,9 @@ public class PlayerNew1 : MonoBehaviour
             if (chosenAnomaly == "hangman")
                 SpawnHangman();
             if (chosenAnomaly == "creepyeyes")
-                ApplyEyeFrame();
+                SpawnCreepyEyeFrame();
+            if (chosenAnomaly == "deadsign")
+                SpawnCreepyExit();
 
             
 
@@ -132,7 +135,15 @@ public class PlayerNew1 : MonoBehaviour
             RestoreRedEyes();
         }
         if (chosenAnomaly == "creepyeyes")
-            RestoreEyes();
+        {
+            GameObject regularEye = Instantiate(regularEyeFrame, regularEyeFrame.transform.position, regularEyeFrame.transform.rotation);
+            Debug.Log("regularEye enabled normally.");
+        }
+        if (chosenAnomaly == "deadsign")
+        {
+            GameObject regularExit = Instantiate(regularExitPrefab, regularExitPrefab.transform.position, regularExitPrefab.transform.rotation);
+            Debug.Log("regularExit enabled normally.");
+        }
 
         foreach (GameObject anomaly in activeAnomalies)
         {
@@ -359,67 +370,30 @@ public class PlayerNew1 : MonoBehaviour
     }
 
 
-void ApplyEyeFrame()
-{
-    if (eyeFrame == null || hauntedEyeMat == null)
+    void SpawnCreepyEyeFrame()
     {
-        Debug.LogError("eyeFrame or hauntedEyeMat is not assigned!");
-        return;
-    }
+        GameObject regular = GameObject.Find("RegularEyeFrame") ?? GameObject.Find("RegularEyeFrame(Clone)");
 
-    Debug.Log("Applying Eye Frame");
-
-    Transform backFrame = eyeFrame.transform.Find("BackBase");
-    Debug.Log("init Applying Eye Frame");
-
-    if (backFrame != null)
-    {
-        Renderer renderer = backFrame.GetComponent<Renderer>();
-        if (renderer != null)
+        if (regular != null)
         {
-            renderer.material = hauntedEyeMat;
+            Destroy(regular);
         }
-        else
+
+        GameObject creepy = Instantiate(creepyEyeFrame, creepyEyeFrame.transform.position, creepyEyeFrame.transform.rotation);
+        activeAnomalies.Add(creepy);
+    }
+
+    void SpawnCreepyExit()
+    {
+        GameObject regularExit = GameObject.Find("Exit") ?? GameObject.Find("Exit(Clone)");
+
+        if (regularExit != null)
         {
-            Debug.LogWarning("Renderer not found on 'Back Base'");
+            Destroy(regularExit);
         }
+
+        GameObject creepyExit = Instantiate(creepyExitPrefab, creepyExitPrefab.transform.position, creepyExitPrefab.transform.rotation);
+        activeAnomalies.Add(creepyExit);
     }
-    else
-    {
-        Debug.LogWarning("'Back Base' not found under EyeFrame");
-    }
-}
-
-
-void RestoreEyes()
-{
-    if (eyeFrame == null || regularEyeMat == null)
-    {
-        Debug.LogError("eyeFrame or regularEyeMat is not assigned!");
-        return;
-    }
-
-    Debug.Log("Restoring Eyes");
-
-    Transform backFrame = eyeFrame.transform.Find("BackBase");
-    if (backFrame != null)
-    {
-        Renderer renderer = backFrame.GetComponent<Renderer>();
-        if (renderer != null)
-        {
-            renderer.material = regularEyeMat;
-        }
-        else
-        {
-            Debug.LogWarning("Renderer not found on 'Back Base'");
-        }
-    }
-    else
-    {
-        Debug.LogWarning("'Back Base' not found under EyeFrame");
-    }
-}
-
-
 
 }
