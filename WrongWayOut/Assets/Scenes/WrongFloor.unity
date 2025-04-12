@@ -6374,6 +6374,8 @@ MonoBehaviour:
   creepyEyeFrame: {fileID: 1447151234487414025, guid: 8e9c4e6aed2dce643a7577371e6e9b02, type: 3}
   regularExitPrefab: {fileID: 5965458761938226430, guid: f9fe91c98a5fbcf4484be62ab28d4d55, type: 3}
   creepyExitPrefab: {fileID: 1979545648839953905, guid: d9060090fb2fbeb439660c9b7a6f2760, type: 3}
+  regularDisturbPrefab: {fileID: 3369845677717571098, guid: 959dbecbb113d9a40acf93ea14286089, type: 3}
+  creepyDisturbPrefab: {fileID: 2952258879014692601, guid: 28e063767a4e0594985f5e85f5788566, type: 3}
 --- !u!82 &1019935052
 AudioSource:
   m_ObjectHideFlags: 0
@@ -17869,6 +17871,10 @@ PrefabInstance:
     - target: {fileID: 3369845677717571098, guid: 959dbecbb113d9a40acf93ea14286089, type: 3}
       propertyPath: m_Name
       value: RegularDoorHanger
+      objectReference: {fileID: 0}
+    - target: {fileID: 5652801900697667646, guid: 959dbecbb113d9a40acf93ea14286089, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

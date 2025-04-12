@@ -37,9 +37,11 @@ public class PlayerNew1 : MonoBehaviour
     public GameObject creepyEyeFrame;
     public GameObject regularExitPrefab;
     public GameObject creepyExitPrefab;
+    public GameObject regularDisturbPrefab;
+    public GameObject creepyDisturbPrefab;
 
     // private string[] availableAnomalies = { "zombie", "bloodstain", "creepydoll", "photoframehouseon", "hauntedskin", "missingeyes", "hangman", "creepyeyes", "deadsign" };
-    private string[] availableAnomalies = { "deadsign", "hauntedskin", "hangman" };
+    private string[] availableAnomalies = { "deadsign", "disturb", "hangman" };
     private string chosenAnomaly;
 
     private List<string> anomalyHistory = new List<string>(); // Tracks last anomalies
@@ -104,6 +106,8 @@ public class PlayerNew1 : MonoBehaviour
                 SpawnCreepyEyeFrame();
             if (chosenAnomaly == "deadsign")
                 SpawnCreepyExit();
+            if (chosenAnomaly == "disturb")
+                SpawnCreepyDisturb();
 
             
 
@@ -143,6 +147,11 @@ public class PlayerNew1 : MonoBehaviour
         {
             GameObject regularExit = Instantiate(regularExitPrefab, regularExitPrefab.transform.position, regularExitPrefab.transform.rotation);
             Debug.Log("regularExit enabled normally.");
+        }
+        if (chosenAnomaly == "disturb")
+        {
+            GameObject regularDisturb = Instantiate(regularDisturbPrefab, regularDisturbPrefab.transform.position, regularDisturbPrefab.transform.rotation);
+            Debug.Log("regularDisturb enabled normally.");
         }
 
         foreach (GameObject anomaly in activeAnomalies)
@@ -394,6 +403,19 @@ public class PlayerNew1 : MonoBehaviour
 
         GameObject creepyExit = Instantiate(creepyExitPrefab, creepyExitPrefab.transform.position, creepyExitPrefab.transform.rotation);
         activeAnomalies.Add(creepyExit);
+    }
+
+    void SpawnCreepyDisturb()
+    {
+        GameObject regularDisturb = GameObject.Find("RegularDoorHanger") ?? GameObject.Find("RegularDoorHanger(Clone)");
+
+        if (regularDisturb != null)
+        {
+            Destroy(regularDisturb);
+        }
+
+        GameObject creepyDisturb = Instantiate(creepyDisturbPrefab, creepyDisturbPrefab.transform.position, creepyDisturbPrefab.transform.rotation);
+        activeAnomalies.Add(creepyDisturb);
     }
 
 }
