@@ -29,19 +29,27 @@ public class PlayerNew1 : MonoBehaviour
     public GameObject manSitting;
     public Material normalSkinMat;
     public Material hauntedSkinMat;
-    public GameObject manSitting2; 
+    public GameObject manSitting2;
     public GameObject redLeftBallPrefab;
     public GameObject redRightBallPrefab;
     public GameObject hangmanPrefab;
-    public GameObject regularEyeFrame; 
+    public GameObject regularEyeFrame;
     public GameObject creepyEyeFrame;
     public GameObject regularExitPrefab;
     public GameObject creepyExitPrefab;
     public GameObject regularDisturbPrefab;
     public GameObject creepyDisturbPrefab;
 
+    public AudioClip knockingSound;
+    public AudioSource knockingAudioSource;
+
+    private bool isKnocking = false;
+
+    public GameObject detectionAreaPrefab;
+    private GameObject detectionArea;
+
     // private string[] availableAnomalies = { "zombie", "bloodstain", "creepydoll", "photoframehouseon", "hauntedskin", "missingeyes", "hangman", "creepyeyes", "deadsign" };
-    private string[] availableAnomalies = { "deadsign", "disturb", "hangman" };
+    private string[] availableAnomalies = { "knocking", "deadsign", "disturb" };
     private string chosenAnomaly;
 
     private List<string> anomalyHistory = new List<string>(); // Tracks last anomalies
@@ -108,8 +116,10 @@ public class PlayerNew1 : MonoBehaviour
                 SpawnCreepyExit();
             if (chosenAnomaly == "disturb")
                 SpawnCreepyDisturb();
+            if (chosenAnomaly == "knocking")
+                SpawnKnockingSound();
 
-            
+
 
             anomalyHistory.Add(chosenAnomaly); // Store the anomaly
             if (anomalyHistory.Count > 4) anomalyHistory.RemoveAt(0); // Keep history size to 4
@@ -153,6 +163,10 @@ public class PlayerNew1 : MonoBehaviour
             GameObject regularDisturb = Instantiate(regularDisturbPrefab, regularDisturbPrefab.transform.position, regularDisturbPrefab.transform.rotation);
             Debug.Log("regularDisturb enabled normally.");
         }
+        if (chosenAnomaly == "knocking")
+        {
+            StopKnockingSound();
+        }
 
         foreach (GameObject anomaly in activeAnomalies)
         {
@@ -180,6 +194,15 @@ public class PlayerNew1 : MonoBehaviour
         }
 
         return possibleAnomalies[Random.Range(0, possibleAnomalies.Count)];
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player") && !isKnocking)
+        {
+            isKnocking = true;
+            StartCoroutine(PlayKnockingSound());
+        }
     }
 
 
@@ -417,5 +440,34 @@ public class PlayerNew1 : MonoBehaviour
         GameObject creepyDisturb = Instantiate(creepyDisturbPrefab, creepyDisturbPrefab.transform.position, creepyDisturbPrefab.transform.rotation);
         activeAnomalies.Add(creepyDisturb);
     }
+    void SpawnKnockingSound()
+    {
 
+        if (knockingAudioSource == null)
+        {
+            Debug.LogError("AudioSource not found on " + gameObject.name);
+            return;
+        }
+        detectionArea = Instantiate(detectionAreaPrefab, detectionAreaPrefab.transform.position, detectionAreaPrefab.transform.rotation);
+        detectionArea.GetComponent<Collider>().isTrigger = true;
+
+        activeAnomalies.Add(detectionArea);
+    }
+
+    private IEnumerator PlayKnockingSound()
+    {
+
+        while (isKnocking)
+        {
+            knockingAudioSource.PlayOneShot(knockingSound);
+            yield return new WaitForSeconds(3f);
+        }
+    }
+
+    void StopKnockingSound()
+    {
+        isKnocking = false;
+        knockingAudioSource.Stop();
+        Destroy(detectionArea);
+    }
 }
