@@ -40,16 +40,12 @@ public class PlayerNew1 : MonoBehaviour
     public GameObject regularDisturbPrefab;
     public GameObject creepyDisturbPrefab;
 
-    public AudioClip knockingSound;
-    public AudioSource knockingAudioSource;
 
-    private bool isKnocking = false;
+    public GameObject knockDetectorPrefab; // Assign your prefab in Inspector
+    private KnockDetector activeKnockDetector; // Store reference after spawn    
 
-    public GameObject detectionAreaPrefab;
-    private GameObject detectionArea;
-
-    // private string[] availableAnomalies = { "zombie", "bloodstain", "creepydoll", "photoframehouseon", "hauntedskin", "missingeyes", "hangman", "creepyeyes", "deadsign" };
-    private string[] availableAnomalies = { "knocking", "deadsign", "disturb" };
+    // private string[] availableAnomalies = { "zombie", "bloodstain", "creepydoll", "photoframehouseon", "hauntedskin", "missingeyes", "hangman", "creepyeyes", "deadsign", "knocking", "disturb" };
+    private string[] availableAnomalies = { "knocking" };
     private string chosenAnomaly;
 
     private List<string> anomalyHistory = new List<string>(); // Tracks last anomalies
@@ -117,7 +113,7 @@ public class PlayerNew1 : MonoBehaviour
             if (chosenAnomaly == "disturb")
                 SpawnCreepyDisturb();
             if (chosenAnomaly == "knocking")
-                SpawnKnockingSound();
+                SpawnKnockDetector();
 
 
 
@@ -165,7 +161,7 @@ public class PlayerNew1 : MonoBehaviour
         }
         if (chosenAnomaly == "knocking")
         {
-            StopKnockingSound();
+            StopKnockDetector();
         }
 
         foreach (GameObject anomaly in activeAnomalies)
@@ -194,15 +190,6 @@ public class PlayerNew1 : MonoBehaviour
         }
 
         return possibleAnomalies[Random.Range(0, possibleAnomalies.Count)];
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player") && !isKnocking)
-        {
-            isKnocking = true;
-            StartCoroutine(PlayKnockingSound());
-        }
     }
 
 
@@ -440,34 +427,38 @@ public class PlayerNew1 : MonoBehaviour
         GameObject creepyDisturb = Instantiate(creepyDisturbPrefab, creepyDisturbPrefab.transform.position, creepyDisturbPrefab.transform.rotation);
         activeAnomalies.Add(creepyDisturb);
     }
-    void SpawnKnockingSound()
-    {
 
-        if (knockingAudioSource == null)
+    public void SpawnKnockDetector()
+    {
+        // Check if KnockDetector is already spawned
+        if (activeKnockDetector != null)
         {
-            Debug.LogError("AudioSource not found on " + gameObject.name);
-            return;
+            Debug.Log("KnockDetector already spawned!");
+            return; // Don't spawn a new one if it's already active
         }
-        detectionArea = Instantiate(detectionAreaPrefab, detectionAreaPrefab.transform.position, detectionAreaPrefab.transform.rotation);
-        detectionArea.GetComponent<Collider>().isTrigger = true;
 
-        activeAnomalies.Add(detectionArea);
-    }
+        // Spawn and initialize the KnockDetector
+        GameObject spawnedDetector = Instantiate(knockDetectorPrefab, new Vector3(28f,3f,6.5f), Quaternion.Euler(0, 90, 0)); // Use player position or any spawn position
+        activeKnockDetector = spawnedDetector.GetComponent<KnockDetector>();
 
-    private IEnumerator PlayKnockingSound()
-    {
-
-        while (isKnocking)
+        if (activeKnockDetector != null)
         {
-            knockingAudioSource.PlayOneShot(knockingSound);
-            yield return new WaitForSeconds(3f);
+            Debug.Log("Got KnockDetector");
+            activeKnockDetector.isKnocking = true;
+            Debug.Log("isKnocking set to true");
+        }
+        else
+        {
+            Debug.LogError("No KnockDetector script found on the spawned prefab!");
         }
     }
 
-    void StopKnockingSound()
+    public void StopKnockDetector()
     {
-        isKnocking = false;
-        knockingAudioSource.Stop();
-        Destroy(detectionArea);
+        if (activeKnockDetector != null)
+        {
+            activeKnockDetector.StopKnocking();
+        }
     }
+
 }
