@@ -25,7 +25,11 @@ public class ElevatorController : MonoBehaviour
 
     public Button3d button3d;  // Add this field to your ElevatorController
 
-
+    // AudioSource and AudioClip references for open and close sounds
+    public AudioSource elevatorOpenAudioSource;  // The AudioSource for opening sound
+    public AudioSource elevatorCloseAudioSource; // The AudioSource for closing sound
+    public AudioClip elevatorOpenSound;          // The sound to play when the elevator doors open
+    public AudioClip elevatorCloseSound;         // The sound to play when the elevator doors close
 
     void Start()
     {
@@ -37,7 +41,6 @@ public class ElevatorController : MonoBehaviour
         leftDoorClosedPos = leftDoor.position + new Vector3(3f, 0, 0);
         rightDoorClosedPos = rightDoor.position + new Vector3(-3f, 0, 0);
         StartCoroutine(CloseAndOpenDoors());
-
     }
 
     void OnTriggerEnter(Collider other)
@@ -57,10 +60,10 @@ public class ElevatorController : MonoBehaviour
         }
     }
 
-        public IEnumerator CloseAndOpenDoors()
+    public IEnumerator CloseAndOpenDoors()
     {
         // Disable the button click while doors are closing/opening
-        button3d.clicking = false; 
+        button3d.clicking = false;
 
         GameObject blocker = Instantiate(blockerPrefab, new Vector3(4.5f, 3f, -0.35f), Quaternion.identity);
         yield return new WaitForSeconds(1f);
@@ -68,6 +71,12 @@ public class ElevatorController : MonoBehaviour
         isMoving = true;
 
         GameObject invisibleDetector = Instantiate(invisiblePrefab, new Vector3(4f, 3f, 2f), Quaternion.identity);
+
+        // Play the close sound when closing the doors
+        if (elevatorCloseAudioSource != null && elevatorCloseSound != null)
+        {
+            elevatorCloseAudioSource.PlayOneShot(elevatorCloseSound);
+        }
 
         // Close doors
         while (Vector3.Distance(leftDoor.position, leftDoorClosedPos) > 0.01f)
@@ -84,6 +93,11 @@ public class ElevatorController : MonoBehaviour
         Destroy(blocker);
 
         // Open doors
+        if (elevatorOpenAudioSource != null && elevatorOpenSound != null)
+        {
+            elevatorOpenAudioSource.PlayOneShot(elevatorOpenSound);
+        }
+
         while (Vector3.Distance(leftDoor.position, leftDoorOpenPos) > 0.01f)
         {
             leftDoor.position = Vector3.MoveTowards(leftDoor.position, leftDoorOpenPos, doorSpeed * Time.deltaTime);
@@ -94,7 +108,7 @@ public class ElevatorController : MonoBehaviour
         isMoving = false;
 
         // Re-enable button clicking after doors are fully opened
-        button3d.clicking = true; 
+        button3d.clicking = true;
     }
 
     public void DetectPlayerExit(GameObject detector)
@@ -105,21 +119,27 @@ public class ElevatorController : MonoBehaviour
 
     public IEnumerator CloseDoors(GameObject invdetector)
     {
-    button3d.clicking = false;
-    
-    // Destroy the passed-in invisible detector
-    Destroy(invdetector);
+        button3d.clicking = false;
 
-    // Find and destroy all other invisiblePrefab instances
-    GameObject[] invisibleObjects = GameObject.FindGameObjectsWithTag("Invisible");
-    foreach (GameObject obj in invisibleObjects)
-    {
-        Destroy(obj);
-    }
+        // Destroy the passed-in invisible detector
+        Destroy(invdetector);
+
+        // Find and destroy all other invisiblePrefab instances
+        GameObject[] invisibleObjects = GameObject.FindGameObjectsWithTag("Invisible");
+        foreach (GameObject obj in invisibleObjects)
+        {
+            Destroy(obj);
+        }
 
         GameObject blocker = Instantiate(blockerPrefab, new Vector3(4.5f, 3f, 0.3f), Quaternion.identity);
         yield return new WaitForSeconds(2f);
         isMoving = true;
+
+        // Play the close sound when closing the doors
+        if (elevatorCloseAudioSource != null && elevatorCloseSound != null)
+        {
+            elevatorCloseAudioSource.PlayOneShot(elevatorCloseSound);
+        }
 
         // Close doors
         while (Vector3.Distance(leftDoor.position, leftDoorClosedPos) > 0.01f)
@@ -143,6 +163,12 @@ public class ElevatorController : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         isMoving = true;
+        // Play the open sound when opening the doors
+        if (elevatorOpenAudioSource != null && elevatorOpenSound != null)
+        {
+            elevatorOpenAudioSource.PlayOneShot(elevatorOpenSound);
+        }
+
         // Open doors
         while (Vector3.Distance(leftDoor.position, leftDoorOpenPos) > 0.01f)
         {
