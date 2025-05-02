@@ -43,6 +43,11 @@ public class ElevatorController : MonoBehaviour
         StartCoroutine(CloseAndOpenDoors());
     }
 
+    public IEnumerator Wait(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && !isMoving)

@@ -1,48 +1,67 @@
 using UnityEngine;
-using System.Collections;
 
 public class Button3d : MonoBehaviour
 {
-    public ElevatorController elevatorController;
-    public PlayerNew1 player; // Assign in Inspector
+    public ElevatorController elevatorController;  // Link to elevator controller
+    public PlayerNew1 player;  // Link to the player (for anomaly verification)
     [HideInInspector]
-    public bool clicking = true; // Control clicking state
-    
+    public bool clicking = true;  // Control clicking state
+
+    private void Start()
+    {
+
+        if (gameObject.activeInHierarchy)
+        {
+            Debug.Log(gameObject.name + " is active.");
+        }
+        else
+        {
+            Debug.LogWarning(gameObject.name + " is not active.");
+        }
+        // Ensure the button has a collider and it's set to interactable
+        if (GetComponent<Collider>() == null)
+        {
+            Debug.LogError("Button3d requires a Collider component to interact.");
+        }
+    }
+
     // Method to handle button press action
     public void ClickButton()
     {
-        if (!clicking)
+        if (!clicking)  // Prevent action if button is not clickable
         {
-            return; // Do nothing if the button is disabled
+            return;
         }
-        
-        bool isYesButton = false; // Default value
-        
-        // Set isYesButton based on the button name or tag
-        if (gameObject.name == "YesButton") 
+
+        bool isYesButton = false;
+
+        // Determine button type based on its name
+        if (gameObject.name == "YesButton")
         {
             isYesButton = true;
         }
-        else if (gameObject.name == "NoButton") 
+        else if (gameObject.name == "NoButton")
         {
             isYesButton = false;
         }
 
+        // Perform the button action if the player is linked
         if (player != null)
         {
-            player.VerifyAnomaly(isYesButton);  // Pass the isYesButton state to the player's method
+            player.VerifyAnomaly(isYesButton);
         }
 
-        // Trigger CloseAndOpenDoors
-        if (elevatorController != null && gameObject.name != "LiftButton")
+        // Handle door actions based on button type
+        if (elevatorController != null)
         {
-            Debug.Log(gameObject.name + " pressed");
-            StartCoroutine(elevatorController.CloseAndOpenDoors());  // Run coroutine to close and open doors
-        }
-        else if (elevatorController != null && gameObject.name == "LiftButton")
-        {
-            Debug.Log(gameObject.name + " pressed");
-            StartCoroutine(elevatorController.OpenDoors());
+            if (gameObject.name != "LiftButton")
+            {
+                StartCoroutine(elevatorController.CloseAndOpenDoors());  // Close and open doors
+            }
+            else
+            {
+                StartCoroutine(elevatorController.OpenDoors());  // Open doors for "LiftButton"
+            }
         }
     }
 }

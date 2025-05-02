@@ -5,63 +5,77 @@ using System.Collections;
 public class PlayerInputHandler : MonoBehaviour
 {
     public PlayerNew1 player;
-    public Transform cameraTransform; // Reference to the FPS camera
-    private AudioSource footstepAudio;  // Footstep sound source
-    public AudioClip footstepClip;      // Assign this in the Inspector
+    public Transform cameraTransform;
+    private AudioSource footstepAudio;
+    public AudioClip footstepClip;
 
     private bool isMoving = false;
+    private bool isRunning = false;
+    private bool currentRunState = false;
+    private Coroutine footstepCoroutine;
 
     void Start()
     {
-        footstepAudio = gameObject.AddComponent<AudioSource>();  // Create audio source if not added
+        footstepAudio = gameObject.AddComponent<AudioSource>();
         footstepAudio.clip = footstepClip;
-        footstepAudio.loop = false;  // Play sound once per step
-        footstepAudio.volume = 0.4f;
-
+        footstepAudio.loop = false;
+        footstepAudio.volume = 1f;
     }
 
     void Update()
     {
         Vector3 playerForward = player.transform.forward;
         playerForward.y = 0;
-
         Vector3 playerRight = player.transform.right;
         playerRight.y = 0;
-
         Vector3 finalMovement = Vector3.zero;
 
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
-        {
-            finalMovement += (Input.GetKey(KeyCode.W) ? playerForward : Vector3.zero);
-            finalMovement += (Input.GetKey(KeyCode.A) ? -playerRight : Vector3.zero);
-            finalMovement += (Input.GetKey(KeyCode.S) ? -playerForward : Vector3.zero);
-            finalMovement += (Input.GetKey(KeyCode.D) ? playerRight : Vector3.zero);
+        bool inputW = Input.GetKey(KeyCode.W);
+        bool inputA = Input.GetKey(KeyCode.A);
+        bool inputS = Input.GetKey(KeyCode.S);
+        bool inputD = Input.GetKey(KeyCode.D);
 
-            if (!isMoving)
+        bool hasInput = inputW || inputA || inputS || inputD;
+        isRunning = Input.GetKey(KeyCode.LeftShift) && inputW;
+
+        if (hasInput)
+        {
+            finalMovement += inputW ? playerForward : Vector3.zero;
+            finalMovement += inputA ? -playerRight : Vector3.zero;
+            finalMovement += inputS ? -playerForward : Vector3.zero;
+            finalMovement += inputD ? playerRight : Vector3.zero;
+
+            if (!isMoving || currentRunState != isRunning)
             {
                 isMoving = true;
-                StartCoroutine(PlayFootsteps());
+                currentRunState = isRunning;
+
+                if (footstepCoroutine != null)
+                    StopCoroutine(footstepCoroutine);
+
+                footstepCoroutine = StartCoroutine(PlayFootsteps());
             }
         }
         else
         {
             isMoving = false;
+
+            if (footstepCoroutine != null)
+            {
+                StopCoroutine(footstepCoroutine);
+                footstepCoroutine = null;
+            }
         }
 
-        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-        {
-            player.playerSpeed = 9f;
-        }
-        else
-        {
-            player.playerSpeed = 7f;
-        }
+        player.playerSpeed = isRunning ? 9f : 7f;
 
         finalMovement.Normalize();
         player.MoveWithCC(finalMovement);
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
+            Time.timeScale = 1f;
+            Time.fixedDeltaTime = 0.02f;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
@@ -72,17 +86,12 @@ public class PlayerInputHandler : MonoBehaviour
         {
             if (!footstepAudio.isPlaying)
             {
+                footstepAudio.pitch = isRunning ? 1.3f : 1.0f;
                 footstepAudio.Play();
             }
-            if (player.playerSpeed == 7f)
-            {
-                yield return new WaitForSeconds(0.1f);  // Adjust step interval
 
-            }
-            else if (player.playerSpeed == 9f)
-            {
-                yield return new WaitForSeconds(0.05f);
-            }
+            float interval = isRunning ? 0.1f : 0.3f;
+            yield return new WaitForSeconds(interval);
         }
     }
 }

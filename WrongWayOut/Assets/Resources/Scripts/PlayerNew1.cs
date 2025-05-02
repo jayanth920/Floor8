@@ -44,8 +44,8 @@ public class PlayerNew1 : MonoBehaviour
     public GameObject knockDetectorPrefab; // Assign your prefab in Inspector
     private KnockDetector activeKnockDetector; // Store reference after spawn    
 
-    // private string[] availableAnomalies = { "zombie", "bloodstain", "creepydoll", "photoframehouseon", "hauntedskin", "missingeyes", "hangman", "creepyeyes", "deadsign", "knocking", "disturb" };
-    private string[] availableAnomalies = { "knocking" };
+    private string[] availableAnomalies = { "zombie", "bloodstain", "creepydoll", "photoframehouseon", "hauntedskin", "missingeyes", "hangman", "creepyeyes", "deadsign", "knocking", "disturb" };
+    // private string[] availableAnomalies = { "zombie", "bloodstain", "knocking" };
     private string chosenAnomaly;
 
     private List<string> anomalyHistory = new List<string>(); // Tracks last anomalies
@@ -61,6 +61,7 @@ public class PlayerNew1 : MonoBehaviour
 
     void Start()
     {
+        // AttachCrosshairToPlayer();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         SetUpNewRoom();
@@ -69,7 +70,26 @@ public class PlayerNew1 : MonoBehaviour
     void Update()
     {
         ApplyGravityWithCC();
-        MouseLook();
+        // MouseLook();
+    }
+
+    public void AttachCrosshairToPlayer()
+    {
+        // Check if the Crosshair script is already attached to the player
+        Crosshair crosshairScript = GetComponentInChildren<Crosshair>();
+
+        if (crosshairScript == null)
+        {
+            // If not, attach the Crosshair script
+            crosshairScript = gameObject.AddComponent<Crosshair>();
+
+            // You can also initialize the Crosshair script here if needed
+            Debug.Log("Crosshair script has been attached to the player.");
+        }
+        else
+        {
+            Debug.Log("Crosshair script is already attached to the player.");
+        }
     }
 
     void SetUpNewRoom()
@@ -438,7 +458,7 @@ public class PlayerNew1 : MonoBehaviour
         }
 
         // Spawn and initialize the KnockDetector
-        GameObject spawnedDetector = Instantiate(knockDetectorPrefab, new Vector3(28f,3f,6.5f), Quaternion.Euler(0, 90, 0)); // Use player position or any spawn position
+        GameObject spawnedDetector = Instantiate(knockDetectorPrefab, new Vector3(28f, 3f, 6.5f), Quaternion.Euler(0, 90, 0)); // Use player position or any spawn position
         activeKnockDetector = spawnedDetector.GetComponent<KnockDetector>();
 
         if (activeKnockDetector != null)
