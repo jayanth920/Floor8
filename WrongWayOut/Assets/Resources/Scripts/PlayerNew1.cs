@@ -44,6 +44,9 @@ public class PlayerNew1 : MonoBehaviour
     public GameObject knockDetectorPrefab; // Assign your prefab in Inspector
     private KnockDetector activeKnockDetector; // Store reference after spawn    
 
+    public GameObject lightRoomPrefab;
+    public GameObject buttonBoardPrefab;
+
     private string[] availableAnomalies = { "zombie", "bloodstain", "creepydoll", "photoframehouseon", "hauntedskin", "missingeyes", "hangman", "creepyeyes", "deadsign", "knocking", "disturb" };
     // private string[] availableAnomalies = { "zombie", "bloodstain", "knocking" };
     private string chosenAnomaly;
@@ -268,7 +271,7 @@ public class PlayerNew1 : MonoBehaviour
         }
         else
         {
-            currentFloor = 8; // Reset if wrong
+            currentFloor = 0; // Reset if wrong
         }
 
         UpdateFloorText();
@@ -276,16 +279,54 @@ public class PlayerNew1 : MonoBehaviour
 
         if (currentFloor == 0)
         {
+            ClearAnomalies();
+            Debug.Log("You won the game! Loading Win Scene...");
             LoadWinScene();
         }
     }
 
     void LoadWinScene()
     {
-        // Debug.Log("You won the game! Loading Win Scene...");
-        SceneManager.LoadScene("Win");
+        Debug.Log("in load scene");
+        StartCoroutine(WaitThreeSeconds());
+        DestroyStuff();
+        if (buttonBoardPrefab != null)
+        {
+            Debug.Log("button board prefab deleting");
+            Destroy(buttonBoardPrefab);
+        }
+        Instantiate(lightRoomPrefab, lightRoomPrefab.transform.position, lightRoomPrefab.transform.rotation);
     }
 
+
+
+    IEnumerator WaitThreeSeconds()
+    {
+        Debug.Log("Waiting...");
+        yield return new WaitForSeconds(3f);
+        Debug.Log("3 seconds passed!");
+    }
+
+    public void DestroyStuff()
+    {
+        string[] targetNames = {
+            "InvisibleBlocker", "InvisibleBlocker(Clone)",
+            "InvisibleDetector", "InvisibleDetector(Clone)",
+            "EleDoorLeft", "EleDoorRight"
+        };
+
+        foreach (string name in targetNames)
+        {
+            GameObject[] objs = GameObject.FindObjectsOfType<GameObject>();
+            foreach (GameObject obj in objs)
+            {
+                if (obj.name == name)
+                {
+                    Destroy(obj);
+                }
+            }
+        }
+    }
 
     void SpawnZombie()
     {
