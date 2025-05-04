@@ -17,6 +17,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/WrongFloor.unity
     guid: 962b1027a79a647478ad0c459d52b864
+  - enabled: 1
+    path: Assets/Scenes/oldpause.unity
+    guid: 73893f322ed2706419f5724615c22b2e
+  - enabled: 1
+    path: Assets/Scenes/PauseMenu.unity
+    guid: 01064af07ed416b4183bc683a075c5f6
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
