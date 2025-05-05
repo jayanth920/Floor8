@@ -4583,7 +4583,6 @@ GameObject:
   - component: {fileID: 907851304}
   - component: {fileID: 907851303}
   - component: {fileID: 907851302}
-  - component: {fileID: 907851305}
   - component: {fileID: 907851306}
   m_Layer: 5
   m_Name: OptionsPanel
@@ -4663,19 +4662,6 @@ RectTransform:
   m_AnchoredPosition: {x: 12, y: 61.59}
   m_SizeDelta: {x: 377.77, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &907851305
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 907851301}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb7ff9bc729765b42987306bf6eb5991, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dropdown: {fileID: 1521192280}
 --- !u!114 &907851306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7014,7 +7000,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: QUIT
+  m_text: MAIN MENU
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -9012,7 +8998,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 526493484}
         m_TargetAssemblyTypeName: SC_PauseMainMenu, Assembly-CSharp
-        m_MethodName: QuitButton
+        m_MethodName: ExitToMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -22,41 +22,49 @@ public class SC_OptionsManager : MonoBehaviour
     public Slider musicVolumeSlider;    // Music
     public Slider sfxVolumeSlider;      // SFX
 
-public TMP_Dropdown resolutionDropdown; // If using TextMeshPro
+    public TMP_Dropdown resolutionDropdown;
+
+    private readonly Resolution[] availableResolutions = new Resolution[]
+    {
+    new Resolution { width = 1920, height = 1080 },
+    new Resolution { width = 1600, height = 900 },
+    new Resolution { width = 1280, height = 720 },
+    new Resolution { width = 1024, height = 576 },
+    new Resolution { width = 800, height = 600 }
+    };
+
 
     private ColorAdjustments colorAdjustments;
-    private Resolution[] resolutions;
 
     void Start()
     {
         if (postProcessVolume.profile.TryGet(out colorAdjustments))
         {
-            // Resolution
-            resolutions = Screen.resolutions;
+            // Populate resolution dropdown
             resolutionDropdown.ClearOptions();
             List<string> options = new List<string>();
-            int currentResIndex = 0;
+            int currentResolutionIndex = 0;
 
-            for (int i = 0; i < resolutions.Length; i++)
+            for (int i = 0; i < availableResolutions.Length; i++)
             {
-                string option = resolutions[i].width + " x " + resolutions[i].height;
-                if (!options.Contains(option)) // avoid duplicate resolutions
+                Resolution res = availableResolutions[i];
+                string option = res.width + " x " + res.height;
+                options.Add(option);
+
+                if (Screen.currentResolution.width == res.width && Screen.currentResolution.height == res.height)
                 {
-                    options.Add(option);
-                    if (resolutions[i].width == Screen.currentResolution.width &&
-                        resolutions[i].height == Screen.currentResolution.height)
-                    {
-                        currentResIndex = i;
-                    }
+                    currentResolutionIndex = i;
                 }
             }
 
             resolutionDropdown.AddOptions(options);
-            int savedResIndex = PlayerPrefs.GetInt("ResolutionIndex", currentResIndex);
-            resolutionDropdown.value = savedResIndex;
+            resolutionDropdown.value = PlayerPrefs.GetInt("ResolutionIndex", currentResolutionIndex);
             resolutionDropdown.RefreshShownValue();
             resolutionDropdown.onValueChanged.AddListener(SetResolution);
-            SetResolution(savedResIndex);
+
+            // Apply the selected resolution at start
+            SetResolution(resolutionDropdown.value);
+
 
             // Existing settings...
             float brightness = PlayerPrefs.GetFloat("Brightness", 0.6f);
@@ -112,12 +120,11 @@ public TMP_Dropdown resolutionDropdown; // If using TextMeshPro
 
     public void SetResolution(int index)
     {
-        Resolution selectedRes = resolutions[index];
-        Screen.SetResolution(selectedRes.width, selectedRes.height, Screen.fullScreen);
+        Resolution res = availableResolutions[index];
+        Screen.SetResolution(res.width, res.height, Screen.fullScreen);
         PlayerPrefs.SetInt("ResolutionIndex", index);
         FindObjectOfType<SettingsApplier>()?.ApplySettings();
     }
-
     public void SetBrightness(float value)
     {
         colorAdjustments.postExposure.value = Mathf.Lerp(-2f, 2f, value);

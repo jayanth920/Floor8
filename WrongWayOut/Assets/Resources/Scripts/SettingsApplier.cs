@@ -10,6 +10,12 @@ public class SettingsApplier : MonoBehaviour
 
     private ColorAdjustments colorAdjustments;
 
+
+    void Awake()
+    {
+        Application.targetFrameRate = 60;
+    }
+
     void Start()
     {
         ApplySettings(); // Apply settings on scene load
@@ -40,12 +46,22 @@ public class SettingsApplier : MonoBehaviour
         audioMixer.SetFloat("SFXVolume", sfxDB);
 
         // Resolution
-        int resIndex = PlayerPrefs.GetInt("ResolutionIndex", -1);
-        if (resIndex >= 0 && resIndex < Screen.resolutions.Length)
+        int index = PlayerPrefs.GetInt("ResolutionIndex", 0);
+        Resolution[] predefinedRes = new Resolution[]
         {
-            Resolution res = Screen.resolutions[resIndex];
-            Screen.SetResolution(res.width, res.height, isFullscreen);
+    new Resolution { width = 1920, height = 1080 },
+    new Resolution { width = 1600, height = 900 },
+    new Resolution { width = 1280, height = 720 },
+    new Resolution { width = 1024, height = 576 },
+    new Resolution { width = 800, height = 600 }
+};
+
+        if (index >= 0 && index < predefinedRes.Length)
+        {
+            Resolution res = predefinedRes[index];
+            Screen.SetResolution(res.width, res.height, Screen.fullScreen);
         }
+
 
 
         // Post-processing

@@ -25,13 +25,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2102391745520335289}
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0.3}
-  m_LocalScale: {x: 0.24999994, y: 0.5, z: 20}
+  m_LocalScale: {x: 0.40994638, y: 0.4115226, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.6, y: 0.365}
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'CONTROLS
+  m_text: 'KEY CONTROLS
 
 
     W / A / S / D - Move
@@ -115,7 +115,14 @@ MonoBehaviour:
     Shift - Hold to Run
 
 
-    Left Click - Interact / Press Buttons'
+    Left Click - Interact / Press Buttons
+
+
+    P - Take
+    a screenshot
+
+
+    Esc- Pause the game '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 80893acaf147e89409725de01b004614, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 80893acaf147e89409725de01b004614, type: 2}

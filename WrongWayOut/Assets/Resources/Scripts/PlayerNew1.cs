@@ -15,7 +15,7 @@ public class PlayerNew1 : MonoBehaviour
     private bool hasAnomaly;
     [Header("Floor System")]
     public TextMeshPro floorText; // Assign the Floor 3D TextMeshPro
-    private int currentFloor = 8;
+    public int currentFloor = 8;
 
     [Header("Anomaly Prefabs")]
     private List<GameObject> activeAnomalies = new List<GameObject>();
@@ -60,6 +60,10 @@ public class PlayerNew1 : MonoBehaviour
     void Awake()
     {
         characterController = GetComponent<CharacterController>();
+        Debug.Log("GettingFLOOR");
+        currentFloor = SaveSystem.LoadFloor();
+        UpdateFloorText();
+        Debug.Log("Starting on floor: " + currentFloor);
     }
 
     void Start()
@@ -67,6 +71,8 @@ public class PlayerNew1 : MonoBehaviour
         // AttachCrosshairToPlayer();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+
         SetUpNewRoom();
     }
 
@@ -271,7 +277,7 @@ public class PlayerNew1 : MonoBehaviour
         }
         else
         {
-            currentFloor = 0; // Reset if wrong
+            currentFloor = 8; // Reset if wrong
         }
 
         UpdateFloorText();

@@ -1,19 +1,31 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SC_MainMenu : MonoBehaviour
 {
     public GameObject MainMenu;
     public GameObject CreditsMenu;
-
     public GameObject OptionsPanel;
 
+    private CanvasGroup mainMenuCanvasGroup;
+    private CanvasGroup creditsMenuCanvasGroup;
+    private CanvasGroup optionsPanelCanvasGroup;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        MainMenuButton();
+        // Get the CanvasGroup components
+        mainMenuCanvasGroup = MainMenu.GetComponent<CanvasGroup>();
+        creditsMenuCanvasGroup = CreditsMenu.GetComponent<CanvasGroup>();
+        optionsPanelCanvasGroup = OptionsPanel.GetComponent<CanvasGroup>();
+
+        // Set initial visibility
+        creditsMenuCanvasGroup.alpha = 0f;  // Make sure CreditsMenu is hidden at the start
+        optionsPanelCanvasGroup.alpha = 0f; // Make sure OptionsPanel is hidden at the start
+
+        // Ensure only MainMenu is visible at the start
+        MainMenu.SetActive(true);
+        CreditsMenu.SetActive(false);
+        OptionsPanel.SetActive(false);
     }
 
     public void PlayNowButton()
@@ -24,37 +36,71 @@ public class SC_MainMenu : MonoBehaviour
 
     public void CreditsButton()
     {
-        // Show Credits Menu
-        MainMenu.SetActive(false);
-        CreditsMenu.SetActive(true);
-        OptionsPanel.SetActive(false);
+        // Fade out Main Menu and fade in Credits Menu
+        StartCoroutine(FadeOutIn(mainMenuCanvasGroup, creditsMenuCanvasGroup));
     }
 
     public void MainMenuButton()
     {
-        // Show Main Menu
-        MainMenu.SetActive(true);
-        CreditsMenu.SetActive(false);
-        OptionsPanel.SetActive(false);
+        // Fade out current menu (either Credits or Options) and fade in Main Menu
+        StartCoroutine(FadeOutIn(optionsPanelCanvasGroup, mainMenuCanvasGroup));
+        StartCoroutine(FadeOutIn(creditsMenuCanvasGroup, mainMenuCanvasGroup));
     }
 
     public void OptionsButton()
     {
-        // Show Options Panel
-        MainMenu.SetActive(false);
-        CreditsMenu.SetActive(false);
-        OptionsPanel.SetActive(true);
-        
+        // Fade out Main Menu and fade in Options Panel
+        StartCoroutine(FadeOutIn(mainMenuCanvasGroup, optionsPanelCanvasGroup));
     }
 
     public void QuitButton()
     {
-        // Quit Game
         Application.Quit();
     }
+    
+    // Coroutine to fade out and then fade in
+    private IEnumerator FadeOutIn(CanvasGroup fadeOutGroup, CanvasGroup fadeInGroup)
+    {
+        // Fade out the current group
+        yield return StartCoroutine(FadeOut(fadeOutGroup));
 
-    public void SetFullscreen(bool isFullscreen)
-{
-    Screen.fullScreen = isFullscreen;
-}
+        // Enable the target group
+        fadeInGroup.gameObject.SetActive(true);
+
+        // Fade in the new group
+        yield return StartCoroutine(FadeIn(fadeInGroup));
+    }
+
+    // Coroutine to fade out a CanvasGroup (set alpha to 0)
+    private IEnumerator FadeOut(CanvasGroup canvasGroup)
+    {
+        float elapsedTime = 0f;
+        float duration = 0.2f; // Fade out duration in seconds
+
+        while (elapsedTime < duration)
+        {
+            canvasGroup.alpha = Mathf.Lerp(1f, 0f, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        canvasGroup.alpha = 0f;
+        canvasGroup.gameObject.SetActive(false); // Disable after fading out
+    }
+
+    // Coroutine to fade in a CanvasGroup (set alpha to 1)
+    private IEnumerator FadeIn(CanvasGroup canvasGroup)
+    {
+        float elapsedTime = 0f;
+        float duration = 0.2f; // Fade in duration in seconds
+
+        while (elapsedTime < duration)
+        {
+            canvasGroup.alpha = Mathf.Lerp(0f, 1f, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        canvasGroup.alpha = 1f;
+    }
 }

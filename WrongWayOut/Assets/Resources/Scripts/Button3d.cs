@@ -44,7 +44,6 @@ public class Button3d : MonoBehaviour
         {
             isYesButton = false;
         }
-
         // Perform the button action if the player is linked
         if (player != null)
         {
@@ -58,7 +57,7 @@ public class Button3d : MonoBehaviour
             {
                 StartCoroutine(elevatorController.CloseAndOpenDoors());  // Close and open doors
             }
-            else
+            else if (gameObject.name == "LiftButton" && clicking)
             {
                 StartCoroutine(elevatorController.OpenDoors());  // Open doors for "LiftButton"
             }
