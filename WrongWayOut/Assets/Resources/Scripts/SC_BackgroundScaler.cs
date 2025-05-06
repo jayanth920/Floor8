@@ -8,7 +8,6 @@ public class SC_BackgroundScaler : MonoBehaviour
     RectTransform rt;
     float ratio;
 
-    // Start is called before the first frame update
     void Start()
     {
         backgroundImage = GetComponent<Image>();
@@ -16,13 +15,12 @@ public class SC_BackgroundScaler : MonoBehaviour
         ratio = backgroundImage.sprite.bounds.size.x / backgroundImage.sprite.bounds.size.y;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!rt)
             return;
 
-        //Scale image proportionally to fit the screen dimensions, while preserving aspect ratio
+        //scale image proportion
         if(Screen.height * ratio >= Screen.width)
         {
             rt.sizeDelta = new Vector2(Screen.height * ratio, Screen.height);

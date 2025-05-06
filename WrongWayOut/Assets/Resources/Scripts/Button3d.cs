@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Button3d : MonoBehaviour
 {
-    public ElevatorController elevatorController;  // Link to elevator controller
-    public PlayerNew1 player;  // Link to the player (for anomaly verification)
+    public ElevatorController elevatorController;  
+    public PlayerNew1 player; 
     [HideInInspector]
     public bool clicking = true;  // Control clicking state
 

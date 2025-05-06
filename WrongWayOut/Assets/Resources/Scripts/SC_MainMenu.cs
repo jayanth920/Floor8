@@ -22,7 +22,6 @@ public class SC_MainMenu : MonoBehaviour
         creditsMenuCanvasGroup.alpha = 0f;  // Make sure CreditsMenu is hidden at the start
         optionsPanelCanvasGroup.alpha = 0f; // Make sure OptionsPanel is hidden at the start
 
-        // Ensure only MainMenu is visible at the start
         MainMenu.SetActive(true);
         CreditsMenu.SetActive(false);
         OptionsPanel.SetActive(false);
@@ -30,26 +29,22 @@ public class SC_MainMenu : MonoBehaviour
 
     public void PlayNowButton()
     {
-        // Play Now Button has been pressed, here you can initialize your game (For example Load a Scene called GameLevel etc.)
         UnityEngine.SceneManagement.SceneManager.LoadScene("WrongFloor");
     }
 
     public void CreditsButton()
     {
-        // Fade out Main Menu and fade in Credits Menu
         StartCoroutine(FadeOutIn(mainMenuCanvasGroup, creditsMenuCanvasGroup));
     }
 
     public void MainMenuButton()
     {
-        // Fade out current menu (either Credits or Options) and fade in Main Menu
         StartCoroutine(FadeOutIn(optionsPanelCanvasGroup, mainMenuCanvasGroup));
         StartCoroutine(FadeOutIn(creditsMenuCanvasGroup, mainMenuCanvasGroup));
     }
 
     public void OptionsButton()
     {
-        // Fade out Main Menu and fade in Options Panel
         StartCoroutine(FadeOutIn(mainMenuCanvasGroup, optionsPanelCanvasGroup));
     }
 
@@ -58,20 +53,15 @@ public class SC_MainMenu : MonoBehaviour
         Application.Quit();
     }
     
-    // Coroutine to fade out and then fade in
     private IEnumerator FadeOutIn(CanvasGroup fadeOutGroup, CanvasGroup fadeInGroup)
     {
-        // Fade out the current group
         yield return StartCoroutine(FadeOut(fadeOutGroup));
 
-        // Enable the target group
         fadeInGroup.gameObject.SetActive(true);
 
-        // Fade in the new group
         yield return StartCoroutine(FadeIn(fadeInGroup));
     }
 
-    // Coroutine to fade out a CanvasGroup (set alpha to 0)
     private IEnumerator FadeOut(CanvasGroup canvasGroup)
     {
         float elapsedTime = 0f;
@@ -85,10 +75,9 @@ public class SC_MainMenu : MonoBehaviour
         }
 
         canvasGroup.alpha = 0f;
-        canvasGroup.gameObject.SetActive(false); // Disable after fading out
+        canvasGroup.gameObject.SetActive(false); 
     }
 
-    // Coroutine to fade in a CanvasGroup (set alpha to 1)
     private IEnumerator FadeIn(CanvasGroup canvasGroup)
     {
         float elapsedTime = 0f;

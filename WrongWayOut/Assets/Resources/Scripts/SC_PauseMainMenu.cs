@@ -10,7 +10,7 @@ public class SC_PauseMainMenu : MonoBehaviour
     public GameObject player;
     private FpsControllerWithCrosshair fpsControllerScript;
 
-    private PlayerNew1 playerScript; // Assuming you have a PlayerScript to manage player state
+    private PlayerNew1 playerScript; 
 
 
 
@@ -20,7 +20,7 @@ public class SC_PauseMainMenu : MonoBehaviour
         CreditsMenu.SetActive(false);
         OptionsPanel.SetActive(false);
 
-        player = GameObject.FindWithTag("Player"); // Your Player GameObject should have tag "Player"
+        player = GameObject.FindWithTag("Player"); 
         if (player != null)
         {
             playerScript = player.GetComponent<PlayerNew1>();

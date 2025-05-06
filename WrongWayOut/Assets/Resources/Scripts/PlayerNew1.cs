@@ -14,7 +14,7 @@ public class PlayerNew1 : MonoBehaviour
 
     private bool hasAnomaly;
     [Header("Floor System")]
-    public TextMeshPro floorText; // Assign the Floor 3D TextMeshPro
+    public TextMeshPro floorText;
     public int currentFloor = 8;
 
     [Header("Anomaly Prefabs")]
@@ -41,8 +41,8 @@ public class PlayerNew1 : MonoBehaviour
     public GameObject creepyDisturbPrefab;
 
 
-    public GameObject knockDetectorPrefab; // Assign your prefab in Inspector
-    private KnockDetector activeKnockDetector; // Store reference after spawn    
+    public GameObject knockDetectorPrefab;
+    private KnockDetector activeKnockDetector;
 
     public GameObject lightRoomPrefab;
     public GameObject buttonBoardPrefab;
@@ -51,8 +51,8 @@ public class PlayerNew1 : MonoBehaviour
     // private string[] availableAnomalies = { "zombie", "bloodstain", "knocking" };
     private string chosenAnomaly;
 
-    private List<string> anomalyHistory = new List<string>(); // Tracks last anomalies
-    private int consecutiveNoAnomalies = 0; // Tracks consecutive no anomaly cases
+    private List<string> anomalyHistory = new List<string>(); // tracks last anomalie
+    private int consecutiveNoAnomalies = 0; // tracks conscutive no anomaly cases
 
 
     private float xRotation = 0f;
@@ -68,7 +68,6 @@ public class PlayerNew1 : MonoBehaviour
 
     void Start()
     {
-        // AttachCrosshairToPlayer();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
@@ -79,26 +78,6 @@ public class PlayerNew1 : MonoBehaviour
     void Update()
     {
         ApplyGravityWithCC();
-        // MouseLook();
-    }
-
-    public void AttachCrosshairToPlayer()
-    {
-        // Check if the Crosshair script is already attached to the player
-        Crosshair crosshairScript = GetComponentInChildren<Crosshair>();
-
-        if (crosshairScript == null)
-        {
-            // If not, attach the Crosshair script
-            crosshairScript = gameObject.AddComponent<Crosshair>();
-
-            // You can also initialize the Crosshair script here if needed
-            Debug.Log("Crosshair script has been attached to the player.");
-        }
-        else
-        {
-            Debug.Log("Crosshair script is already attached to the player.");
-        }
     }
 
     void SetUpNewRoom()
@@ -112,7 +91,7 @@ public class PlayerNew1 : MonoBehaviour
         }
         else
         {
-            hasAnomaly = Random.value > 0.5f; // 50% chance
+            hasAnomaly = Random.value > 0.5f; // 50%
         }
 
 
@@ -144,8 +123,6 @@ public class PlayerNew1 : MonoBehaviour
             if (chosenAnomaly == "knocking")
                 SpawnKnockDetector();
 
-
-
             anomalyHistory.Add(chosenAnomaly); // Store the anomaly
             if (anomalyHistory.Count > 4) anomalyHistory.RemoveAt(0); // Keep history size to 4
             consecutiveNoAnomalies = 0; // Reset counter
@@ -153,7 +130,7 @@ public class PlayerNew1 : MonoBehaviour
         else
         {
             chosenAnomaly = "";
-            consecutiveNoAnomalies++; // Increase counter
+            consecutiveNoAnomalies++; // Inc counter
         }
     }
 
@@ -250,18 +227,6 @@ public class PlayerNew1 : MonoBehaviour
         characterController.Move(direction * playerSpeed * Time.deltaTime);
     }
 
-    void MouseLook()
-    {
-        float mouseX = Input.GetAxis("Mouse X") * 2.0f;
-        float mouseY = Input.GetAxis("Mouse Y") * 2.0f;
-
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-        Camera.main.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-
-        transform.Rotate(Vector3.up * mouseX);
-    }
-
     public void VerifyAnomaly(bool userSaidYes)
     {
         StartCoroutine(DelayedVerifyAnomaly(userSaidYes));
@@ -295,6 +260,7 @@ public class PlayerNew1 : MonoBehaviour
     {
         Debug.Log("in load scene");
         StartCoroutine(WaitThreeSeconds());
+        SaveSystem.SaveFloor(8);
         DestroyStuff();
         if (buttonBoardPrefab != null)
         {
@@ -497,14 +463,14 @@ public class PlayerNew1 : MonoBehaviour
 
     public void SpawnKnockDetector()
     {
-        // Check if KnockDetector is already spawned
+
         if (activeKnockDetector != null)
         {
             Debug.Log("KnockDetector already spawned!");
-            return; // Don't spawn a new one if it's already active
+            return;
         }
 
-        // Spawn and initialize the KnockDetector
+
         GameObject spawnedDetector = Instantiate(knockDetectorPrefab, new Vector3(28f, 3f, 6.5f), Quaternion.Euler(0, 90, 0)); // Use player position or any spawn position
         activeKnockDetector = spawnedDetector.GetComponent<KnockDetector>();
 

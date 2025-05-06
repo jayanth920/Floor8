@@ -75,7 +75,7 @@ public class PauseMenuManager : MonoBehaviour
 
     private void PauseAndLoadPauseMenu()
     {
-        Time.timeScale = 0.1f; // Slow down time (dilation effect)
+        Time.timeScale = 0.1f; // Slow mo time dilation
         isPaused = true;
 
         // Unlock and show the cursor when paused

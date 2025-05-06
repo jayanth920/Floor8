@@ -23,9 +23,9 @@ public class ElevatorController : MonoBehaviour
 
     public GameObject invisiblePrefab;
 
-    public Button3d button3d;  // Add this field to your ElevatorController
+    public Button3d button3d;  
 
-    // AudioSource and AudioClip references for open and close sounds
+    // references for open and close sounds
     public AudioSource elevatorOpenAudioSource;  // The AudioSource for opening sound
     public AudioSource elevatorCloseAudioSource; // The AudioSource for closing sound
     public AudioClip elevatorOpenSound;          // The sound to play when the elevator doors open

@@ -14,7 +14,7 @@ public class KnockDetector : MonoBehaviour
 
     void Start()
     {
-        // Assign knockingAudioSource if it's not assigned in the Inspector
+        // In case if it's not assigned in the Inspector
         if (knockingAudioSource == null)
         {
             knockingAudioSource = GetComponent<AudioSource>();

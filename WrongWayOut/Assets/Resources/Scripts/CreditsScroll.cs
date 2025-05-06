@@ -25,7 +25,7 @@ public class CreditsScroll : MonoBehaviour
             if (promptCanvasGroup != null)
             {
                 promptCanvasGroup.alpha = 0f;
-                enterPrompt.SetActive(true); // Keep active for fading
+                enterPrompt.SetActive(true); 
             }
         }
     }
