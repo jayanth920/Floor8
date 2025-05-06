@@ -1,28 +1,63 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CreditsScroll : MonoBehaviour
 {
-    public RectTransform content;
+    public RectTransform titleText;
+    public RectTransform creditsText;
     public float scrollSpeed = 20f;
-    public float waitBeforeReturn = 4f;
+    public float stopYPosition = 0f;
+
+    public GameObject enterPrompt;
+    private CanvasGroup promptCanvasGroup;
+
+    public float fadeDuration = 1f;
+
+    private bool hasStopped = false;
+    private float fadeTimer = 0f;
 
     void Start()
     {
-        StartCoroutine(ScrollCredits());
+        if (enterPrompt != null)
+        {
+            promptCanvasGroup = enterPrompt.GetComponent<CanvasGroup>();
+            if (promptCanvasGroup != null)
+            {
+                promptCanvasGroup.alpha = 0f;
+                enterPrompt.SetActive(true); // Keep active for fading
+            }
+        }
     }
 
-    IEnumerator ScrollCredits()
+    void Update()
     {
-        float endY = content.rect.height; // height of the credits
-        while (content.anchoredPosition.y < endY)
+        if (!hasStopped)
         {
-            content.anchoredPosition += Vector2.up * scrollSpeed * Time.deltaTime;
-            yield return null;
-        }
+            titleText.anchoredPosition += new Vector2(0, scrollSpeed * Time.deltaTime);
+            creditsText.anchoredPosition += new Vector2(0, scrollSpeed * Time.deltaTime);
 
-        yield return new WaitForSeconds(waitBeforeReturn);
-        SceneManager.LoadScene("StartMenu"); // replace with your main menu scene name
+            if (creditsText.anchoredPosition.y >= stopYPosition)
+            {
+                float offset = creditsText.anchoredPosition.y - stopYPosition;
+                titleText.anchoredPosition -= new Vector2(0, offset);
+                creditsText.anchoredPosition = new Vector2(creditsText.anchoredPosition.x, stopYPosition);
+
+                hasStopped = true;
+            }
+        }
+        else
+        {
+            if (promptCanvasGroup != null && promptCanvasGroup.alpha < 1f)
+            {
+                fadeTimer += Time.deltaTime;
+                promptCanvasGroup.alpha = Mathf.Clamp01(fadeTimer / fadeDuration);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SceneManager.LoadScene("StartMenu");
+            }
+        }
     }
 }
