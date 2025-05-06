@@ -14,6 +14,14 @@ public class PlayerInputHandler : MonoBehaviour
     private bool currentRunState = false;
     private Coroutine footstepCoroutine;
 
+    // Voice command flags (trigger these externally)
+    public bool voiceForward = false;
+    public bool voiceBack = false;
+    public bool voiceLeft = false;
+    public bool voiceRight = false;
+
+    private float voicemulti = 10f;
+
     void Start()
     {
         footstepAudio = gameObject.AddComponent<AudioSource>();
@@ -30,14 +38,16 @@ public class PlayerInputHandler : MonoBehaviour
         playerRight.y = 0;
         Vector3 finalMovement = Vector3.zero;
 
-        bool inputW = Input.GetKey(KeyCode.W);
-        bool inputA = Input.GetKey(KeyCode.A);
-        bool inputS = Input.GetKey(KeyCode.S);
-        bool inputD = Input.GetKey(KeyCode.D);
+        // Input handling (both keyboard and voice)
+        bool inputW = Input.GetKey(KeyCode.W) || voiceForward;
+        bool inputA = Input.GetKey(KeyCode.A) || voiceLeft;
+        bool inputS = Input.GetKey(KeyCode.S) || voiceBack;
+        bool inputD = Input.GetKey(KeyCode.D) || voiceRight;
 
         bool hasInput = inputW || inputA || inputS || inputD;
         isRunning = Input.GetKey(KeyCode.LeftShift) && inputW;
 
+        // Apply movement based on voice or keyboard input
         if (hasInput)
         {
             finalMovement += inputW ? playerForward : Vector3.zero;
@@ -45,6 +55,7 @@ public class PlayerInputHandler : MonoBehaviour
             finalMovement += inputS ? -playerForward : Vector3.zero;
             finalMovement += inputD ? playerRight : Vector3.zero;
 
+            // Start footstep sound if moving
             if (!isMoving || currentRunState != isRunning)
             {
                 isMoving = true;
@@ -67,11 +78,29 @@ public class PlayerInputHandler : MonoBehaviour
             }
         }
 
+        // Set player speed based on running state
         player.playerSpeed = isRunning ? 9f : 7f;
 
+        // Normalize and apply movement
         finalMovement.Normalize();
-        player.MoveWithCC(finalMovement);
 
+        // Apply voice movement multiplier only if a voice command is active
+        if (voiceForward || voiceBack || voiceLeft || voiceRight)
+        {
+            player.MoveWithCC(voicemulti * finalMovement);
+        }
+        else
+        {
+            player.MoveWithCC(finalMovement);
+        }
+
+        // Reset voice commands after use
+        if (voiceForward || voiceBack || voiceLeft || voiceRight)
+        {
+            voiceForward = voiceBack = voiceLeft = voiceRight = false;
+        }
+
+        // Reset game (for testing purposes)
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Time.timeScale = 1f;

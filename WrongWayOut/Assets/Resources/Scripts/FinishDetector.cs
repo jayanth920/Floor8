@@ -12,7 +12,7 @@ public class FinishDetector : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            SceneManager.LoadScene("StartMenu");
+            SceneManager.LoadScene("Win");
         }
     }
 }

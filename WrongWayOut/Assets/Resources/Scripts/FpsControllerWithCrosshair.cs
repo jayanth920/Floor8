@@ -92,12 +92,12 @@ public class FpsControllerWithCrosshair : MonoBehaviour
         {
             if (crosshairImage != null) crosshairImage.enabled = true;
 
-            if (Input.GetMouseButtonDown(0) && button3d.clicking)  // Left-click
+            if (Input.GetMouseButtonDown(0) && button3d.clicking)  
             {
                 Button3d button = hit.transform.GetComponent<Button3d>();
                 if (button != null)
                 {
-                    button.ClickButton();  // Call PerformAction instead of OnClickAction
+                    button.ClickButton();  
                 }
             }
         }
@@ -115,7 +115,7 @@ public class FpsControllerWithCrosshair : MonoBehaviour
 
         if (isRunning)
         {
-            // Sharp U/V motion using triangle wave pattern
+            // triangle wave 
             bobTimer += Time.deltaTime * runBobFrequency;
             float sharpBob = Mathf.PingPong(bobTimer, 1f) * 2f - 1f; // Triangle wave from -1 to 1
             float verticalOffset = sharpBob * runBobAmplitude;
@@ -123,14 +123,14 @@ public class FpsControllerWithCrosshair : MonoBehaviour
         }
         else if (isMoving)
         {
-            // Gentle sinusoidal bob while walking
+            // sin bob while walking
             bobTimer += Time.deltaTime * idleBobFrequency;
             float bobOffset = Mathf.Sin(bobTimer * 2f) * idleBobAmplitude;
             cameraTransform.localPosition = initialCameraLocalPos + new Vector3(0f, bobOffset, 0f);
         }
         else
         {
-            // Reset camera when idle
+            // reset cam idle
             bobTimer = 0f;
             cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, initialCameraLocalPos, Time.deltaTime * 5f);
         }
