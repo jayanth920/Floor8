@@ -47,6 +47,8 @@ public class PlayerNew1 : MonoBehaviour
     public GameObject lightRoomPrefab;
     public GameObject buttonBoardPrefab;
 
+    public GameObject ArrowPrefab;
+
     private string[] availableAnomalies = { "zombie", "bloodstain", "creepydoll", "photoframehouseon", "hauntedskin", "missingeyes", "hangman", "creepyeyes", "deadsign", "knocking", "disturb" };
     // private string[] availableAnomalies = { "zombie", "bloodstain", "knocking" };
     private string chosenAnomaly;
@@ -239,10 +241,12 @@ public class PlayerNew1 : MonoBehaviour
         if ((hasAnomaly && userSaidYes) || (!hasAnomaly && !userSaidYes))
         {
             currentFloor--; // Always decrease floor if correct
+            SaveSystem.SaveFloor(currentFloor);
         }
         else
         {
             currentFloor = 8; // Reset if wrong
+            SaveSystem.SaveFloor(currentFloor);
         }
 
         UpdateFloorText();
@@ -259,9 +263,13 @@ public class PlayerNew1 : MonoBehaviour
     void LoadWinScene()
     {
         Debug.Log("in load scene");
+        if (ArrowPrefab != null)
+        {
+            Instantiate(ArrowPrefab, ArrowPrefab.transform.position, ArrowPrefab.transform.rotation);
+        }
         StartCoroutine(WaitThreeSeconds());
-        SaveSystem.SaveFloor(8);
         DestroyStuff();
+        SaveSystem.SaveFloor(8);
         if (buttonBoardPrefab != null)
         {
             Debug.Log("button board prefab deleting");

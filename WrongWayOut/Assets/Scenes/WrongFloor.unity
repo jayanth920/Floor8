@@ -710,7 +710,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2719607690371033125, guid: cb71373875043e348bd74c62036fdb2e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.43
+      value: 3.1
       objectReference: {fileID: 0}
     - target: {fileID: 2719607690371033125, guid: cb71373875043e348bd74c62036fdb2e, type: 3}
       propertyPath: m_LocalScale.z
@@ -722,7 +722,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2719607690371033125, guid: cb71373875043e348bd74c62036fdb2e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4
+      value: 4.008
       objectReference: {fileID: 0}
     - target: {fileID: 2719607690371033125, guid: cb71373875043e348bd74c62036fdb2e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -13510,6 +13510,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 57593293}
     m_Modifications:
+    - target: {fileID: 306309056907478288, guid: bf4fb741b5d5194479410aa50016460a, type: 3}
+      propertyPath: m_text
+      value: "KEY CONTROLS\n\nW / A / S / D - Move\n\nMouse Move - Look Around\n\nLeft
+        Shift - Hold to Run\n\nLeft Click - Interact / Press Buttons\n\nP - Take
+        a screenshot\n\nEsc- Pause the game \n\nVOICE CONTROLS\n\nforward / back
+        /  left /  right"
+      objectReference: {fileID: 0}
     - target: {fileID: 2102391745520335289, guid: bf4fb741b5d5194479410aa50016460a, type: 3}
       propertyPath: m_Name
       value: ControlsText
@@ -13547,6 +13554,18 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4643009187132761985, guid: bf4fb741b5d5194479410aa50016460a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.40994665
+      objectReference: {fileID: 0}
+    - target: {fileID: 4643009187132761985, guid: bf4fb741b5d5194479410aa50016460a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.32258067
+      objectReference: {fileID: 0}
+    - target: {fileID: 4643009187132761985, guid: bf4fb741b5d5194479410aa50016460a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4643009187132761985, guid: bf4fb741b5d5194479410aa50016460a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -13556,7 +13575,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4643009187132761985, guid: bf4fb741b5d5194479410aa50016460a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.3607527
+      value: 0.396
       objectReference: {fileID: 0}
     - target: {fileID: 4643009187132761985, guid: bf4fb741b5d5194479410aa50016460a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -13576,11 +13595,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4643009187132761985, guid: bf4fb741b5d5194479410aa50016460a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.8
+      value: -1.4
       objectReference: {fileID: 0}
     - target: {fileID: 4643009187132761985, guid: bf4fb741b5d5194479410aa50016460a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.42
+      value: 0.419
       objectReference: {fileID: 0}
     - target: {fileID: 4643009187132761985, guid: bf4fb741b5d5194479410aa50016460a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -24343,6 +24362,7 @@ MonoBehaviour:
   knockDetectorPrefab: {fileID: 8349573535859278748, guid: f73ab61bf71abbe43b902d5aa3b92c3a, type: 3}
   lightRoomPrefab: {fileID: 4496559708958830791, guid: b6b1794445084e3479cd26c508daca65, type: 3}
   buttonBoardPrefab: {fileID: 141690545}
+  ArrowPrefab: {fileID: 5263671990068166505, guid: d27a67c62bb6a6c4f814ee21e0d221e0, type: 3}
 --- !u!82 &1019935052
 AudioSource:
   m_ObjectHideFlags: 0
