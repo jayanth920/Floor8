@@ -14205,6 +14205,7 @@ MonoBehaviour:
   volumeSlider: {fileID: 1813640991}
   musicVolumeSlider: {fileID: 0}
   sfxVolumeSlider: {fileID: 0}
+  sensitivitySlider: {fileID: 0}
   resolutionDropdown: {fileID: 0}
 --- !u!114 &511390818
 MonoBehaviour:
@@ -29763,6 +29764,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: 948cdc4b698dcd24e8cde0fd0acdce32, type: 2}
   postProcessVolume: {fileID: 1907783305}
+  player: {fileID: 1019935002}
 --- !u!4 &1050576638
 Transform:
   m_ObjectHideFlags: 0

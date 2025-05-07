@@ -22,6 +22,10 @@ public class SC_OptionsManager : MonoBehaviour
     public Slider musicVolumeSlider;    // Music
     public Slider sfxVolumeSlider;      // SFX
 
+    public Slider sensitivitySlider;
+    private float sensitivity = 0.5f; // default
+
+
     public TMP_Dropdown resolutionDropdown;
 
     private readonly Resolution[] availableResolutions = new Resolution[]
@@ -106,6 +110,12 @@ public class SC_OptionsManager : MonoBehaviour
             fullscreenToggle.isOn = fullscreen;
             fullscreenToggle.onValueChanged.AddListener(SetFullscreen);
             SetFullscreen(fullscreen);
+
+            sensitivity = PlayerPrefs.GetFloat("Sensitivity", 0.5f);
+            sensitivitySlider.value = sensitivity;
+            sensitivitySlider.onValueChanged.AddListener(SetSensitivity);
+            SetSensitivity(sensitivity);
+
         }
         else
         {
@@ -184,6 +194,14 @@ public class SC_OptionsManager : MonoBehaviour
         float dB = Mathf.Log10(boostedValue) * 20f;
         audioMixer.SetFloat("SFXVolume", dB);
         PlayerPrefs.SetFloat("SFXVolume", value);
+        FindObjectOfType<SettingsApplier>()?.ApplySettings();
+    }
+
+    public void SetSensitivity(float value)
+    {
+        sensitivity = value;
+        PlayerPrefs.SetFloat("Sensitivity", value);
+        Debug.Log("Mouse sensitivity set to OPTIOSNMANAGER: " + value);
         FindObjectOfType<SettingsApplier>()?.ApplySettings();
     }
 }

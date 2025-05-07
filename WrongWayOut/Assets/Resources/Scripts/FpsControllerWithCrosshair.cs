@@ -82,31 +82,66 @@ public class FpsControllerWithCrosshair : MonoBehaviour
         controller.Move(move * speed * Time.deltaTime);
     }
 
+    // private void RaycastInteract()
+    // {
+    //     Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
+    //     RaycastHit hit;
+
+    //     Debug.DrawLine(ray.origin, ray.origin + ray.direction * interactionRange, Color.green);
+
+    //     if (Physics.Raycast(ray, out hit, interactionRange, interactableLayer))
+    //     {
+    //         if (crosshairImage != null) crosshairImage.enabled = true;
+
+    //         if (Input.GetMouseButtonDown(0) && button3d.clicking)  
+    //         {
+    //             Button3d button = hit.transform.GetComponent<Button3d>();
+    //             if (button != null)
+    //             {
+    //                 button.ClickButton();  
+    //             }
+    //         }
+    //     }
+    //     else
+    //     {
+    //         if (crosshairImage != null) crosshairImage.enabled = false;
+    //     }
+    // }
+    
     private void RaycastInteract()
+{
+    Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
+    RaycastHit[] hits = Physics.RaycastAll(ray, interactionRange);
+
+    // Sort hits by distance
+    System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+    foreach (var hit in hits)
     {
-        Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
-        RaycastHit hit;
-
-        Debug.DrawLine(ray.origin, ray.origin + ray.direction * interactionRange, Color.green);
-
-        if (Physics.Raycast(ray, out hit, interactionRange, interactableLayer))
+        // Ignore non-interactables
+        if (((1 << hit.collider.gameObject.layer) & interactableLayer) != 0)
         {
             if (crosshairImage != null) crosshairImage.enabled = true;
 
-            if (Input.GetMouseButtonDown(0) && button3d.clicking)  
+            if (Input.GetMouseButtonDown(0) && button3d.clicking)
             {
                 Button3d button = hit.transform.GetComponent<Button3d>();
                 if (button != null)
                 {
-                    button.ClickButton();  
+                    button.ClickButton();
                 }
             }
+            return; // stop after hitting the first interactable
         }
         else
         {
-            if (crosshairImage != null) crosshairImage.enabled = false;
+            //hit a wall or non-interactable before an interactable
+            break;
         }
     }
+
+    if (crosshairImage != null) crosshairImage.enabled = false;
+}
 
     private void ApplyCameraBreathing()
     {
@@ -136,4 +171,10 @@ public class FpsControllerWithCrosshair : MonoBehaviour
             cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, initialCameraLocalPos, Time.deltaTime * 5f);
         }
     }
+
+    public void SetSensitivity(float value)
+{
+    this.mouseSensitivity = value;
+    Debug.Log("Mouse sensitivity set to FROM FPSSCRIPT: " + value);
+}
 }

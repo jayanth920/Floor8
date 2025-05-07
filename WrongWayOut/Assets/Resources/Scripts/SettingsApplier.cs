@@ -10,6 +10,10 @@ public class SettingsApplier : MonoBehaviour
 
     private ColorAdjustments colorAdjustments;
 
+    public GameObject player;
+    private FpsControllerWithCrosshair fpsControllerScript;
+
+
 
     void Awake()
     {
@@ -18,6 +22,13 @@ public class SettingsApplier : MonoBehaviour
 
     void Start()
     {
+        player = GameObject.FindWithTag("Player");
+        if (player != null)
+        {
+            fpsControllerScript = player.GetComponent<FpsControllerWithCrosshair>();
+            Debug.Log("FPS Controller script found and assigned.");
+        }
+
         ApplySettings(); // Apply settings on scene load
     }
 
@@ -44,6 +55,18 @@ public class SettingsApplier : MonoBehaviour
         float sfx = PlayerPrefs.GetFloat("SFXVolume", 0.5f);
         float sfxDB = Mathf.Log10(Mathf.Clamp(sfx * 2f, 0.0001f, 1f)) * 20f;
         audioMixer.SetFloat("SFXVolume", sfxDB);
+
+        // Mouse Sensitivity
+        if (fpsControllerScript != null)
+        {
+            float rawSensitivity = PlayerPrefs.GetFloat("Sensitivity", 0.5f); // 0–1 from slider
+            float mappedSensitivity = Mathf.Lerp(0.5f, 5f, rawSensitivity);   // mapped to 0.5–5
+            fpsControllerScript.SetSensitivity(mappedSensitivity);
+        }
+        else
+        {
+            Debug.LogWarning("IF START MENU (IGNORE) - FPS Controller script not found on player object.");
+        }
 
         // Resolution
         int index = PlayerPrefs.GetInt("ResolutionIndex", 0);
