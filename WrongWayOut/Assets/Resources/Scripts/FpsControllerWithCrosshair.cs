@@ -27,6 +27,7 @@ public class FpsControllerWithCrosshair : MonoBehaviour
     public float runBobAmplitude = 0.05f;
     private Vector3 initialCameraLocalPos;
     private float bobTimer = 0f;
+    
 
     private void Start()
     {
@@ -112,7 +113,7 @@ public class FpsControllerWithCrosshair : MonoBehaviour
         Vector3 velocity = controller.velocity;
         bool isMoving = velocity.magnitude > 0.1f;
         bool isRunning = Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.W);
-
+// cam noise using Perlin im trying to simulate the cinemachine noise stuff, but its not working
         if (isRunning)
         {
             // triangle wave 
