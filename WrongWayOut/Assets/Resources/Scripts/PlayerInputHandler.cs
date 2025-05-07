@@ -100,13 +100,13 @@ public class PlayerInputHandler : MonoBehaviour
             voiceForward = voiceBack = voiceLeft = voiceRight = false;
         }
 
-        // Reset game (for testing purposes)
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Time.timeScale = 1f;
-            Time.fixedDeltaTime = 0.02f;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
+        // // Reset game (for testing purposes)
+        // if (Input.GetKeyDown(KeyCode.Q))
+        // {
+        //     Time.timeScale = 1f;
+        //     Time.fixedDeltaTime = 0.02f;
+        //     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        // }
     }
 
     private IEnumerator PlayFootsteps()
