@@ -77,7 +77,6 @@ public class ElevatorController : MonoBehaviour
 
         GameObject invisibleDetector = Instantiate(invisiblePrefab, new Vector3(4f, 3f, 2f), Quaternion.identity);
 
-        // Play the close sound when closing the doors
         if (elevatorCloseAudioSource != null && elevatorCloseSound != null)
         {
             elevatorCloseAudioSource.PlayOneShot(elevatorCloseSound);
@@ -91,11 +90,7 @@ public class ElevatorController : MonoBehaviour
             yield return null;
         }
 
-        // Wait for 5 seconds inside the elevator
         yield return new WaitForSeconds(3f);
-
-        // Destroy the blocker after 5 seconds
-        Destroy(blocker);
 
         // Open doors
         if (elevatorOpenAudioSource != null && elevatorOpenSound != null)
@@ -105,11 +100,11 @@ public class ElevatorController : MonoBehaviour
 
         while (Vector3.Distance(leftDoor.position, leftDoorOpenPos) > 0.01f)
         {
-            leftDoor.position = Vector3.MoveTowards(leftDoor.position, leftDoorOpenPos, doorSpeed * Time.deltaTime);
-            rightDoor.position = Vector3.MoveTowards(rightDoor.position, rightDoorOpenPos, doorSpeed * Time.deltaTime);
+            leftDoor.position = Vector3.MoveTowards(leftDoor.position, leftDoorOpenPos, doorSpeed * 2f * Time.deltaTime);
+            rightDoor.position = Vector3.MoveTowards(rightDoor.position, rightDoorOpenPos, doorSpeed * 2f  * Time.deltaTime);
             yield return null;
         }
-
+        Destroy(blocker);
         isMoving = false;
 
         // Re-enable button clicking after doors are fully opened
