@@ -1,6 +1,11 @@
 # 🎮 Floor 8 - A Psychological Horror Anomaly Game
 
-![Gameplay Screenshot](https://img.youtube.com/vi/2Pw9BfwMR3U/hqdefault.jpg)
+
+<img width="520" alt="menu" src="https://github.com/user-attachments/assets/e5c98216-900d-4f93-bb3e-23c9f19ad66c" />
+<br/>
+<img width="520" alt="hallway" src="https://github.com/user-attachments/assets/1fff04e5-f1b8-4356-87f4-6128cfd423b7" />
+
+
 
 ## 📽 Gameplay Video
 Watch a short gameplay demo of Floor 8:  
